@@ -1,5 +1,4 @@
-﻿using BehaviorEditor.Shared;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -33,7 +32,7 @@ namespace Nodify
 		INodifyObservableCollection<T> WhenCleared(Action<IList<T>> cleared);
 	}
 
-	public class NodifyObservableCollection<T> : ObservableCollection<T>, INodifyObservableCollection<T>, INotifyPropertyChanged, INotifyCollectionChanged, ICustomTypeDescriptor
+	public class NodifyObservableCollection<T> : Collection<T>, INodifyObservableCollection<T>, INotifyPropertyChanged, INotifyCollectionChanged
 	{
 		protected static readonly PropertyChangedEventArgs IndexerPropertyChanged = new PropertyChangedEventArgs("Item[]");
 		protected static readonly PropertyChangedEventArgs CountPropertyChanged = new PropertyChangedEventArgs("Count");
@@ -188,78 +187,6 @@ namespace Nodify
 
 		private void OnCollectionChanged(NotifyCollectionChangedAction action, object? oldItem, object? newItem, int index)
 			=> OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, newItem, oldItem, index));
-
-		#endregion
-
-		PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties()
-		{
-			// Create a collection object to hold property descriptors
-			PropertyDescriptorCollection pds = new PropertyDescriptorCollection(null);
-
-			for (int i = 0; i < Count; i++)
-			{
-				pds.Add(new ItemPropertyDescriptor<T>(this, i));
-			}
-
-			return pds;
-		}
-
-		#region Use default TypeDescriptor stuff
-
-		AttributeCollection ICustomTypeDescriptor.GetAttributes()
-		{
-			return TypeDescriptor.GetAttributes(this, noCustomTypeDesc: true);
-		}
-
-		string ICustomTypeDescriptor.GetClassName()
-		{
-			return TypeDescriptor.GetClassName(this, noCustomTypeDesc: true);
-		}
-
-		string ICustomTypeDescriptor.GetComponentName()
-		{
-			return TypeDescriptor.GetComponentName(this, noCustomTypeDesc: true);
-		}
-
-		TypeConverter ICustomTypeDescriptor.GetConverter()
-		{
-			return TypeDescriptor.GetConverter(this, noCustomTypeDesc: true);
-		}
-
-		EventDescriptor ICustomTypeDescriptor.GetDefaultEvent()
-		{
-			return TypeDescriptor.GetDefaultEvent(this, noCustomTypeDesc: true);
-		}
-
-		PropertyDescriptor ICustomTypeDescriptor.GetDefaultProperty()
-		{
-			return TypeDescriptor.GetDefaultProperty(this, noCustomTypeDesc: true);
-		}
-
-		object ICustomTypeDescriptor.GetEditor(Type editorBaseType)
-		{
-			return TypeDescriptor.GetEditor(this, editorBaseType, noCustomTypeDesc: true);
-		}
-
-		EventDescriptorCollection ICustomTypeDescriptor.GetEvents()
-		{
-			return TypeDescriptor.GetEvents(this, noCustomTypeDesc: true);
-		}
-
-		EventDescriptorCollection ICustomTypeDescriptor.GetEvents(Attribute[] attributes)
-		{
-			return TypeDescriptor.GetEvents(this, attributes, noCustomTypeDesc: true);
-		}
-
-		PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
-		{
-			return TypeDescriptor.GetProperties(this, attributes, noCustomTypeDesc: true);
-		}
-
-		object ICustomTypeDescriptor.GetPropertyOwner(PropertyDescriptor pd)
-		{
-			return this;
-		}
 
 		#endregion
 	}

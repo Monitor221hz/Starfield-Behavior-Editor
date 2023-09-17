@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+
 
 namespace BehaviorEditor.MVVM.Model.Starfield.Properties
 {
@@ -15,7 +15,7 @@ namespace BehaviorEditor.MVVM.Model.Starfield.Properties
         [XmlElement(ElementName = "prop", Order =1)]
         public List<Property> Properties { get; set; } = new List<Property>();
 
-
+        
         public bool FindPropertyByValue(string value, out Property? outProperty)
         {
             outProperty = Properties.Where(p => p.RawValue == value).FirstOrDefault()!;

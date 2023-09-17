@@ -11,7 +11,7 @@ using BehaviorEditor.MVVM.Model.Starfield;
 using BehaviorEditor.MVVM.Model.Starfield.Properties;
 using Nodify;
 using BehaviorEditor.MVVM.Model.Starfield.Connectors;
-using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+
 
 namespace BehaviorEditor.MVVM.ViewModel
 {
@@ -38,7 +38,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 		public NodifyObservableCollection<ConnectorViewModel> Inputs { get => inputs; set => SetProperty(ref inputs, value); }
 		public NodifyObservableCollection<ConnectorViewModel> Outputs { get => outputs; set => SetProperty(ref outputs, value); }
 
-		[ExpandableObject]
+		
 		public NodifyObservableCollection<PropertySheetViewModel> PropertySheets { get => propertySheets; set => SetProperty(ref propertySheets, value); }
 		public NodeViewModel(TNode node)
 		{
