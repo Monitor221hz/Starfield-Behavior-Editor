@@ -13,13 +13,16 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
+
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+
+        
         <controls:ApplicationFlowBar Grid.Row="0" Grid.ColumnSpan="2"></controls:ApplicationFlowBar>
-        <controls:PropertyExplorer Grid.Column="1" Grid.Row="1"></controls:PropertyExplorer>
+        <controls:PropertyExplorer x:Name="Explorer"  Grid.Column="1" Grid.Row="1"></controls:PropertyExplorer>
         <nodify:NodifyEditor ItemsSource ="{Binding Nodes}" 
                              Connections="{Binding Connections}" 
                              PendingConnection="{Binding PendingConnection}" 
@@ -78,5 +81,6 @@
                 </Style>
             </nodify:NodifyEditor.ItemContainerStyle>
         </nodify:NodifyEditor>
+
     </Grid>
 </UserControl>

@@ -1,28 +1,34 @@
 ﻿using BehaviorEditor.MVVM.Model.Starfield.Properties;
+using Nodify;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+
 
 namespace BehaviorEditor.MVVM.ViewModel
 {
-	[ExpandableObject]
-	public class RowViewModel
+	
+	public class RowViewModel : ObservableObject
     {
-        private Row row { get; set; }
+		private NodifyObservableCollection<PropertyViewModel> propertyViewModels = new NodifyObservableCollection<PropertyViewModel>();
 
+		private Row row { get; set; }
 
-        private List<PropertyViewModel> PropertyViewModels { get; set; } = new List<PropertyViewModel>();
+		public string Name { get; set; } = "Name";
 
-        public RowViewModel(Row row) 
+		
+		public NodifyObservableCollection<PropertyViewModel> PropertyViewModels { get => propertyViewModels; set => SetProperty(ref propertyViewModels, value); }
+		public RowViewModel(Row row, List<string> headerNames) 
         { 
             this.row = row;
 
-            foreach(var property in row.Properties) 
+			for (int i = 0; i < headerNames.Count; i++) 
             {
-                PropertyViewModels.Add(new PropertyViewModel(property));
+				Property? property = row.Properties[i];
+				string headerName = headerNames[i];
+				PropertyViewModels.Add(new PropertyViewModel(headerName, property));
             }
         }
 

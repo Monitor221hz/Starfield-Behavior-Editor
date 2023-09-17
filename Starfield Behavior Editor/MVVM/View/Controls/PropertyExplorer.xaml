@@ -14,18 +14,90 @@
     </UserControl.Resources>
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <xctk:PropertyGrid Background="{StaticResource ControlColor}" 
-                           Foreground="{StaticResource ControlColor}" 
-                           Width="500" 
-                           Visibility="{Binding ShowPropertyExplorer, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
-                           SelectedObject="{Binding SelectedNode}"
-                           >
 
-        </xctk:PropertyGrid>
-        
+        <ListView VerticalContentAlignment="Bottom" 
+                  HorizontalContentAlignment="Stretch" 
+                  Grid.Row="0" Grid.Column="0" 
+                  ItemsSource="{Binding SelectedNode.PropertySheets}" 
+                  Visibility="{Binding ShowPropertyExplorer, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                  Background="{StaticResource ControlColor}"
+                  Foreground="{StaticResource HeaderTextGradient}">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <ListView ItemsSource="{Binding Columns}" Grid.Row="0"
+                                  Background="{StaticResource ControlColor}"
+                                  Foreground="{StaticResource HighlightGradient}"
+                                  BorderBrush="{StaticResource HighlightGradient}"
+                                  HorizontalContentAlignment="Stretch" >
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal">
+ 
+                                    </StackPanel>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Header}" 
+                                               Width="125" 
+                                               HorizontalAlignment="Stretch"
+                                               Background="{StaticResource ControlColor}"
+                                               Foreground="{StaticResource HighlightGradient}"
+                                               Padding="10 5 5 5"></TextBlock>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <ListView ItemsSource="{Binding Rows}" Grid.Row="1"
+                                  Background="{StaticResource ControlColor}"
+                                  Foreground="{StaticResource HeaderTextGradient}"
+                                  BorderThickness="0"
+                                  HorizontalContentAlignment="Stretch" >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ListView ItemsSource="{Binding PropertyViewModels}" 
+                                              BorderThickness="0"
+                                              Background="{StaticResource ControlColor}">
+                                        <ListView.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal">
+
+                                                </StackPanel>
+                                            </ItemsPanelTemplate>
+                                        </ListView.ItemsPanel>
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBox 
+                                                    Text="{Binding Value, Mode=TwoWay}" 
+                                                    HorizontalAlignment="Stretch" 
+                                                    Width="125"
+                                                    Background="{StaticResource ControlColor}"
+                                                    Foreground="{StaticResource ParagraphTextGradient}"
+                                                    Padding="5 5 5 5"></TextBox>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            
+                        </ListView>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
 
     </Grid>
 </UserControl>

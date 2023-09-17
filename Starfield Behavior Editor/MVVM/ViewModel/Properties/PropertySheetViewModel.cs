@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using BehaviorEditor.MVVM.Model.Starfield;
 using BehaviorEditor.MVVM.Model.Starfield.Properties;
-using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+
 
 namespace BehaviorEditor.MVVM.ViewModel
 {
-	[ExpandableObject]
+	
 	public class PropertySheetViewModel : ObservableObject
     {
 		private NodifyObservableCollection<RowViewModel> rows = new NodifyObservableCollection<RowViewModel>();
@@ -18,24 +18,28 @@ namespace BehaviorEditor.MVVM.ViewModel
 
 		private PropertySheet propertySheet { get; set;  }
 
-		[ExpandableObject]
+		
 		public NodifyObservableCollection<RowViewModel> Rows { get => rows; set => SetProperty(ref rows, value); }
 
-		[ExpandableObject]
+		
 		public NodifyObservableCollection<ColumnViewModel> Columns { get => columns; set => SetProperty(ref columns, value); }
+
+
 
 		public PropertySheetViewModel(PropertySheet propertySheet)
         {
             this.propertySheet = propertySheet;
+			List<string> columnHeaderNames = new List<string>();
             foreach(var column in propertySheet.Columns)
             {
                 Columns.Add(new ColumnViewModel(column));
+				columnHeaderNames.Add(column.Header);
             }
-            foreach(var row in propertySheet.Rows)
-            {
-                Rows.Add(new RowViewModel(row));
-            }
-        }
+			foreach (var row in propertySheet.Rows)
+			{
+				Rows.Add(new RowViewModel(row, columnHeaderNames));
+			}
+		}
 
 
 

@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+
 
 namespace BehaviorEditor.MVVM.ViewModel
 {
-	[ExpandableObject]
+	
 	public class ColumnViewModel : ObservableObject
     {
 		private string header;
