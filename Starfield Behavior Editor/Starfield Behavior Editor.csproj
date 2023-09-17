@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <RootNamespace>BehaviorEditor</RootNamespace>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\GUI\load.png" />
+    <None Remove="Assets\GUI\open-folder.png" />
+    <None Remove="Assets\GUI\save.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.1" />
+    <PackageReference Include="Nodify" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\GUI\load.png" />
+    <Resource Include="Assets\GUI\open-folder.png" />
+    <Resource Include="Assets\GUI\save.png" />
+  </ItemGroup>
+
+</Project>

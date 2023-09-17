@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="BehaviorEditor.MVVM.View.EditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:nodify="clr-namespace:Nodify;assembly=Nodify"
+             xmlns:vm="clr-namespace:BehaviorEditor.MVVM.ViewModel"
+             xmlns:controls="clr-namespace:BehaviorEditor.MVVM.View.Controls"
+             xmlns:local="clr-namespace:BehaviorEditor.MVVM.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <controls:ApplicationFlowBar Grid.Row="0" Grid.ColumnSpan="2"></controls:ApplicationFlowBar>
+        <controls:PropertyExplorer Grid.Column="1" Grid.Row="1"></controls:PropertyExplorer>
+        <nodify:NodifyEditor ItemsSource ="{Binding Nodes}" 
+                             Connections="{Binding Connections}" 
+                             PendingConnection="{Binding PendingConnection}" 
+                             DisconnectConnectorCommand="{Binding DisconnectConnectorCommand}" 
+                             Grid.Row="1" Background="{StaticResource BackgroundVerticalGradient}"
+                             SelectedItems="{Binding SelectedNodes, UpdateSourceTrigger=PropertyChanged}"
+                             SelectedItem="{Binding SelectedNode}"   >
+
+
+            <nodify:NodifyEditor.ItemTemplate>
+                <DataTemplate DataType="{x:Type vm:NodeViewModel}">
+                    <nodify:Node Header="{Binding Name}"
+             Input="{Binding Inputs}"
+             Output="{Binding Outputs}">
+                        <nodify:Node.InputConnectorTemplate >
+                            <DataTemplate DataType="{x:Type vm:ConnectorViewModel}">
+                                <nodify:NodeInput Header="{Binding Name}"
+                          IsConnected="{Binding IsConnected}"
+                          Anchor="{Binding Anchor, Mode=OneWayToSource}" />
+                            </DataTemplate>
+                        </nodify:Node.InputConnectorTemplate>
+
+                        <nodify:Node.OutputConnectorTemplate>
+                            <DataTemplate DataType="{x:Type vm:ConnectionViewModel}">
+                                <nodify:NodeOutput Header="{Binding Name}"
+                           IsConnected="{Binding IsConnected}"
+                           Anchor="{Binding Anchor, Mode=OneWayToSource}" />
+                            </DataTemplate>
+                        </nodify:Node.OutputConnectorTemplate>
+
+                    </nodify:Node>
+
+                </DataTemplate>
+
+            </nodify:NodifyEditor.ItemTemplate>
+
+            <nodify:NodifyEditor.PendingConnectionTemplate>
+                <DataTemplate DataType="{x:Type vm:ConnectionViewModel}">
+                    <nodify:PendingConnection StartedCommand="{Binding StartCommand}"
+                                      CompletedCommand="{Binding FinishCommand}"
+                                      AllowOnlyConnectors="True" />
+                </DataTemplate>
+            </nodify:NodifyEditor.PendingConnectionTemplate>
+
+            <nodify:NodifyEditor.ConnectionTemplate>
+                <DataTemplate DataType="{x:Type vm:ConnectionViewModel}">
+                    <nodify:Connection Source="{Binding Source.Anchor}"
+                                   Target="{Binding Target.Anchor}" ArrowShape="Arrowhead" ArrowEnds="End"/>
+                </DataTemplate>
+            </nodify:NodifyEditor.ConnectionTemplate>
+
+            <nodify:NodifyEditor.ItemContainerStyle>
+                <Style TargetType="{x:Type nodify:ItemContainer}">
+                    <Setter Property="Location" 
+                    Value="{Binding Location}" />
+                </Style>
+            </nodify:NodifyEditor.ItemContainerStyle>
+        </nodify:NodifyEditor>
+    </Grid>
+</UserControl>
