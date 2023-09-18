@@ -34,7 +34,71 @@
         <GradientStop Offset="0.0" Color="White" />
         <GradientStop Offset="1.0" Color="Silver" />
     </LinearGradientBrush>
+    <Style TargetType="TextBlock" x:Key="HighlightTextBlockStyle">
+        <Setter Property="Background" Value="{StaticResource ControlColor}" />
+        <Setter Property="Foreground" Value="{StaticResource HighlightGradient}" />
+        <Setter Property="FontFamily" Value="Futura"/>
+    </Style>
+    <Style TargetType="TextBlock" x:Key="ControlTextBlockStyle">
+        <Setter Property="Background" Value="{StaticResource ControlColor}" />
+        <Setter Property="Foreground" Value="{StaticResource ParagraphTextGradient}" />
+        <Setter Property="FontFamily" Value="Futura"/>
+    </Style>
+    <Style TargetType="TextBox" x:Key="ControlTextBoxStyle">
+        <Setter Property="Background" Value="{StaticResource ControlColor}" />
+        <Setter Property="Foreground" Value="{StaticResource ParagraphTextGradient}" />
+        <Setter Property="FontFamily" Value="Futura"/>
+    </Style>
 
+    <Style x:Key="ControlButtonStyle" TargetType="Button">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="border" 
+                        BorderThickness="0"
+                        Padding="4,2" 
+                        BorderBrush="Silver" 
+                        CornerRadius="3" 
+                        Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="BorderThickness" Value="1" />
+                            <Setter TargetName="border" Property="Padding" Value="3,2"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="HeaderButtonStyle" TargetType="Button">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="border" 
+                        BorderThickness="0"
+                        Padding="4,2" 
+                        BorderBrush="Pink" 
+                        CornerRadius="3" 
+                        Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="BorderThickness" Value="1" />
+                            <Setter TargetName="border" Property="Padding" Value="3,2"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style x:Key ="ListViewItemStyle" TargetType="{x:Type ListViewItem}">
         <Setter Property="Focusable" Value="false"/>

@@ -20,17 +20,21 @@ namespace BehaviorEditor.MVVM.ViewModel
 
 		
 		public NodifyObservableCollection<PropertyViewModel> PropertyViewModels { get => propertyViewModels; set => SetProperty(ref propertyViewModels, value); }
-		public RowViewModel(Row row, List<string> headerNames) 
+
+		public DelegateCommand<RowViewModel> RemoveCommand { get; set; }
+		public RowViewModel(int numColumns, Row row, DelegateCommand<RowViewModel> removeCommand) 
         { 
             this.row = row;
-
-			for (int i = 0; i < headerNames.Count; i++) 
+			RemoveCommand = removeCommand;
+			for (int i = 0; i < numColumns; i++) 
             {
 				Property? property = row.Properties[i];
-				string headerName = headerNames[i];
-				PropertyViewModels.Add(new PropertyViewModel(headerName, property));
+				PropertyViewModels.Add(new PropertyViewModel(property));
             }
         }
+
+
+
 
 
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,16 @@ namespace BehaviorEditor.MVVM.View.Controls
     /// </summary>
     public partial class PropertyExplorer : UserControl
     {
-        public PropertyExplorer()
+		public IEnumerable ItemsSource
+		{
+			get => (IEnumerable)GetValue(ItemsSourceProperty);
+			set => SetValue(ItemsSourceProperty, value);
+		}
+
+		public static readonly DependencyProperty ItemsSourceProperty =
+			DependencyProperty.Register(
+				nameof(ItemsSource), typeof(IEnumerable), typeof(PropertyExplorer));
+		public PropertyExplorer()
         {
             InitializeComponent();
         }

@@ -22,14 +22,15 @@
 
         
         <controls:ApplicationFlowBar Grid.Row="0" Grid.ColumnSpan="2"></controls:ApplicationFlowBar>
-        <controls:PropertyExplorer x:Name="Explorer"  Grid.Column="1" Grid.Row="1"></controls:PropertyExplorer>
+        <controls:PropertyExplorer ItemsSource="{Binding SelectedNode.PropertySheets}" x:Name="Explorer"  Grid.Column="1" Grid.Row="1"></controls:PropertyExplorer>
         <nodify:NodifyEditor ItemsSource ="{Binding Nodes}" 
                              Connections="{Binding Connections}" 
                              PendingConnection="{Binding PendingConnection}" 
                              DisconnectConnectorCommand="{Binding DisconnectConnectorCommand}" 
                              Grid.Row="1" Background="{StaticResource BackgroundVerticalGradient}"
                              SelectedItems="{Binding SelectedNodes, UpdateSourceTrigger=PropertyChanged}"
-                             SelectedItem="{Binding SelectedNode}"   >
+                             SelectedItem="{Binding SelectedNode}"   
+                             FontFamily="Futura">
 
 
             <nodify:NodifyEditor.ItemTemplate>

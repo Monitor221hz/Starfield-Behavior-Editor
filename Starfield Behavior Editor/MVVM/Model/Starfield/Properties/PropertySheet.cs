@@ -36,6 +36,8 @@ namespace BehaviorEditor.MVVM.Model.Starfield.Properties
             outProperty = null;
             return false;
         }
-        
-    }
+
+        public void RemoveRow(Row row) => Rows.Remove(row);
+
+	}
 }

@@ -25,6 +25,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 		private NodifyObservableCollection<ConnectorViewModel> inputs = new NodifyObservableCollection<ConnectorViewModel>();
 		private NodifyObservableCollection<ConnectorViewModel> outputs = new NodifyObservableCollection<ConnectorViewModel>();
 		private NodifyObservableCollection<PropertySheetViewModel> propertySheets = new NodifyObservableCollection<PropertySheetViewModel>();
+		private string name;
 
 		public Point Location
 		{
@@ -33,7 +34,14 @@ namespace BehaviorEditor.MVVM.ViewModel
 		}
 
 
-		public string Name { get; set; }
+		public string Name { 
+			get => name; 
+			set 
+			{ 
+				SetProperty(ref name, value);
+				DataNode.Name = name;
+			} 
+		}
 
 		public NodifyObservableCollection<ConnectorViewModel> Inputs { get => inputs; set => SetProperty(ref inputs, value); }
 		public NodifyObservableCollection<ConnectorViewModel> Outputs { get => outputs; set => SetProperty(ref outputs, value); }

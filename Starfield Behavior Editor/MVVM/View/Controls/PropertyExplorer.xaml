@@ -24,7 +24,8 @@
         <ListView VerticalContentAlignment="Bottom" 
                   HorizontalContentAlignment="Stretch" 
                   Grid.Row="0" Grid.Column="0" 
-                  ItemsSource="{Binding SelectedNode.PropertySheets}" 
+                  ItemsSource="{Binding ItemsSource,
+                      RelativeSource={RelativeSource AncestorType=UserControl}}" 
                   Visibility="{Binding ShowPropertyExplorer, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
                   Background="{StaticResource ControlColor}"
                   Foreground="{StaticResource HeaderTextGradient}">
@@ -36,40 +37,62 @@
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
-                        <ListView ItemsSource="{Binding Columns}" Grid.Row="0"
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <ListView Grid.Column="0" ItemsSource="{Binding ColumnViewModels}" Grid.Row="0"
                                   Background="{StaticResource ControlColor}"
                                   Foreground="{StaticResource HighlightGradient}"
                                   BorderBrush="{StaticResource HighlightGradient}"
                                   HorizontalContentAlignment="Stretch" >
-                            <ListView.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal">
- 
-                                    </StackPanel>
-                                </ItemsPanelTemplate>
-                            </ListView.ItemsPanel>
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal">
 
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Header}" 
-                                               Width="125" 
+                                        </StackPanel>
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Header}" 
+                                               Width="130" 
                                                HorizontalAlignment="Stretch"
-                                               Background="{StaticResource ControlColor}"
-                                               Foreground="{StaticResource HighlightGradient}"
-                                               Padding="10 5 5 5"></TextBlock>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                        <ListView ItemsSource="{Binding Rows}" Grid.Row="1"
+                                               Padding="10 5 5 5"
+                                               FontSize="13"
+                                               Style="{StaticResource HighlightTextBlockStyle}"></TextBlock>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                            <Button Grid.Column="1" Command="{Binding AddRowCommand}"
+                                    Background="Transparent" 
+                                    BorderThickness="0"
+                                    Style="{StaticResource HeaderButtonStyle}"
+                                    Margin="5 0 11 0">
+                                <Button.Content>
+                                    <Grid>
+                                        <Rectangle Width="20" Height="1" Fill="Pink"></Rectangle>
+                                        <Rectangle Width="1" Height="20" Fill="Pink"></Rectangle>
+                                    </Grid>
+                                </Button.Content>
+                            </Button>
+                        </Grid>
+                        
+                        <ListView ItemsSource="{Binding RowViewModels}" Grid.Row="1"
                                   Background="{StaticResource ControlColor}"
                                   Foreground="{StaticResource HeaderTextGradient}"
                                   BorderThickness="0"
                                   HorizontalContentAlignment="Stretch" >
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <ListView ItemsSource="{Binding PropertyViewModels}" 
+                                    <DockPanel HorizontalAlignment="Stretch">
+                                        <ListView
+                                              ItemsSource="{Binding PropertyViewModels}" 
                                               BorderThickness="0"
                                               Background="{StaticResource ControlColor}">
+                                        
                                         <ListView.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <StackPanel Orientation="Horizontal">
@@ -77,18 +100,32 @@
                                                 </StackPanel>
                                             </ItemsPanelTemplate>
                                         </ListView.ItemsPanel>
-                                        <ListView.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBox 
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBox 
                                                     Text="{Binding Value, Mode=TwoWay}" 
-                                                    HorizontalAlignment="Stretch" 
-                                                    Width="125"
-                                                    Background="{StaticResource ControlColor}"
-                                                    Foreground="{StaticResource ParagraphTextGradient}"
-                                                    Padding="5 5 5 5"></TextBox>
-                                            </DataTemplate>
-                                        </ListView.ItemTemplate>
-                                    </ListView>
+                                                    Width="130"
+                                                    Style="{StaticResource ControlTextBoxStyle}"
+                                                    FontSize="13"
+                                                    Padding="5 5 5 5">
+                                                    </TextBox>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+                                        <Button 
+                                            HorizontalAlignment="Right"
+                                            CommandParameter="{Binding}" 
+                                            Command="{Binding RemoveCommand}" 
+                                            Background="Transparent" 
+                                            BorderThickness="0"
+                                            Style="{StaticResource ControlButtonStyle}">
+                                            <Button.Content>
+                                                <Rectangle Width="20" Height="1" Fill="{StaticResource ParagraphTextGradient}">
+                                                </Rectangle>
+                                            </Button.Content>
+                                        </Button>
+                                    </DockPanel>
+                                   
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                             
