@@ -9,6 +9,12 @@
              xmlns:local="clr-namespace:BehaviorEditor.MVVM.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="ConnectionStyle" TargetType="{x:Type nodify:BaseConnection}">
+            <Setter Property="Stroke" Value="HotPink"></Setter>
+            <Setter Property="Cursor" Value="Hand"></Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -30,14 +36,15 @@
                              Grid.Row="1" Background="{StaticResource BackgroundVerticalGradient}"
                              SelectedItems="{Binding SelectedNodes, UpdateSourceTrigger=PropertyChanged}"
                              SelectedItem="{Binding SelectedNode}"   
-                             FontFamily="Futura">
+                             FontFamily="Bahnschrift"
+                             >
 
-
+            
             <nodify:NodifyEditor.ItemTemplate>
                 <DataTemplate DataType="{x:Type vm:NodeViewModel}">
                     <nodify:Node Header="{Binding Name}"
-             Input="{Binding Inputs}"
-             Output="{Binding Outputs}">
+             Input="{Binding InputViewModels}"
+             Output="{Binding OutputViewModels}">
                         <nodify:Node.InputConnectorTemplate >
                             <DataTemplate DataType="{x:Type vm:ConnectorViewModel}">
                                 <nodify:NodeInput Header="{Binding Name}"
@@ -47,10 +54,10 @@
                         </nodify:Node.InputConnectorTemplate>
 
                         <nodify:Node.OutputConnectorTemplate>
-                            <DataTemplate DataType="{x:Type vm:ConnectionViewModel}">
+                            <DataTemplate DataType="{x:Type vm:LinkViewModel}">
                                 <nodify:NodeOutput Header="{Binding Name}"
                            IsConnected="{Binding IsConnected}"
-                           Anchor="{Binding Anchor, Mode=OneWayToSource}" />
+                           Anchor="{Binding Anchor, Mode=OneWayToSource}"/>
                             </DataTemplate>
                         </nodify:Node.OutputConnectorTemplate>
 
@@ -61,17 +68,19 @@
             </nodify:NodifyEditor.ItemTemplate>
 
             <nodify:NodifyEditor.PendingConnectionTemplate>
-                <DataTemplate DataType="{x:Type vm:ConnectionViewModel}">
+                <DataTemplate DataType="{x:Type vm:LinkViewModel}">
                     <nodify:PendingConnection StartedCommand="{Binding StartCommand}"
                                       CompletedCommand="{Binding FinishCommand}"
-                                      AllowOnlyConnectors="True" />
+                                      AllowOnlyConnectors="True"/>
                 </DataTemplate>
             </nodify:NodifyEditor.PendingConnectionTemplate>
 
             <nodify:NodifyEditor.ConnectionTemplate>
-                <DataTemplate DataType="{x:Type vm:ConnectionViewModel}">
+                <DataTemplate DataType="{x:Type vm:LinkViewModel}">
                     <nodify:Connection Source="{Binding Source.Anchor}"
-                                   Target="{Binding Target.Anchor}" ArrowShape="Arrowhead" ArrowEnds="End"/>
+                                   Target="{Binding Target.Anchor}" ArrowShape="Arrowhead" ArrowEnds="End" 
+                                       Style="{StaticResource ConnectionStyle}"/>
+
                 </DataTemplate>
             </nodify:NodifyEditor.ConnectionTemplate>
 
@@ -79,8 +88,21 @@
                 <Style TargetType="{x:Type nodify:ItemContainer}">
                     <Setter Property="Location" 
                     Value="{Binding Location}" />
+                    <Setter Property="BorderBrush" Value="Pink"></Setter>
+                    
                 </Style>
             </nodify:NodifyEditor.ItemContainerStyle>
+            <nodify:NodifyEditor.Resources>
+                <Style TargetType="{x:Type nodify:NodeOutput}"
+                       BasedOn="{StaticResource {x:Type nodify:NodeOutput}}">
+                    <Setter Property="BorderBrush" Value="Pink"></Setter>
+                </Style>
+                <Style TargetType="{x:Type nodify:NodeInput}"
+                       BasedOn="{StaticResource {x:Type nodify:NodeInput}}">
+                    <Setter Property="BorderBrush" Value="Pink"></Setter>
+                </Style>
+            </nodify:NodifyEditor.Resources>
+
         </nodify:NodifyEditor>
 
     </Grid>

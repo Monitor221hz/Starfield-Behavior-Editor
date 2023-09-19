@@ -9,7 +9,7 @@ namespace BehaviorEditor.MVVM.Model.Starfield.Connectors
 {
     [Serializable]
     [XmlRoot(ElementName = "output")]
-    public class TNodeOutput
+    public class TNodeOutput : TNodeConnector
     {
         [XmlElement(ElementName = "name", Order =1)]
         public string Name { get; set; }

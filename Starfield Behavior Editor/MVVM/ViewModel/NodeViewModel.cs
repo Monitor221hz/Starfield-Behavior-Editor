@@ -43,8 +43,8 @@ namespace BehaviorEditor.MVVM.ViewModel
 			} 
 		}
 
-		public NodifyObservableCollection<ConnectorViewModel> Inputs { get => inputs; set => SetProperty(ref inputs, value); }
-		public NodifyObservableCollection<ConnectorViewModel> Outputs { get => outputs; set => SetProperty(ref outputs, value); }
+		public NodifyObservableCollection<ConnectorViewModel> InputViewModels { get => inputs; set => SetProperty(ref inputs, value); }
+		public NodifyObservableCollection<ConnectorViewModel> OutputViewModels { get => outputs; set => SetProperty(ref outputs, value); }
 
 		
 		public NodifyObservableCollection<PropertySheetViewModel> PropertySheets { get => propertySheets; set => SetProperty(ref propertySheets, value); }
@@ -56,17 +56,27 @@ namespace BehaviorEditor.MVVM.ViewModel
 
 			foreach (TNodeInput input in node.Inputs)
 			{
-				Inputs.Add(new ConnectorViewModel($"{input.Name}"));
+				InputViewModels.Add(new ConnectorViewModel(node, input));
 			}
 			foreach (TNodeOutput output in node.Outputs)
 			{
-				Outputs.Add(new ConnectorViewModel($"{output.Name} IDX:{output.IDX}"));
+				OutputViewModels.Add(new ConnectorViewModel(node, output));
 			}
 			foreach (PropertySheet sheet in node.PropertySheets)
 			{
 				PropertySheets.Add(new PropertySheetViewModel(sheet));
 			}
 
+		}
+
+		public List<LinkViewModel> GetLinkViewModels(Collection<NodeViewModel> nodes)
+		{
+			List<LinkViewModel> linkVMs = new List<LinkViewModel>();
+			foreach(var inputVM in InputViewModels)
+			{
+				inputVM.GetViewModels(this, nodes.ToList(), linkVMs);
+			}
+			return linkVMs;
 		}
 		public NodeViewModel(string name)  => Name = name;
 	}
