@@ -11,7 +11,7 @@ namespace BehaviorEditor.MVVM.Model.Starfield
 {
 	[Serializable]
 	[XmlRoot(ElementName = "node")]
-	public class TNode
+	public partial class TNode
     {
 		[XmlElement(ElementName = "default_state", Order =1)]
 		public string DefaultState { get; set; } //bool nullable

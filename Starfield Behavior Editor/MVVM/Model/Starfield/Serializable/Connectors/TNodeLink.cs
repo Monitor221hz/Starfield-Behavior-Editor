@@ -25,5 +25,11 @@ namespace BehaviorEditor.MVVM.Model.Starfield.Connectors
         public List<PropertySheet> PropertySheets { get; set; }
 
 
+        [XmlIgnore]
+        public TNode ConnectedNode { get; set; }
+
+
+
+
     }
 }

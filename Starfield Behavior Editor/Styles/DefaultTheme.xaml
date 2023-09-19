@@ -37,17 +37,17 @@
     <Style TargetType="TextBlock" x:Key="HighlightTextBlockStyle">
         <Setter Property="Background" Value="{StaticResource ControlColor}" />
         <Setter Property="Foreground" Value="{StaticResource HighlightGradient}" />
-        <Setter Property="FontFamily" Value="Futura"/>
+        <Setter Property="FontFamily" Value="Bahnschrift"/>
     </Style>
     <Style TargetType="TextBlock" x:Key="ControlTextBlockStyle">
         <Setter Property="Background" Value="{StaticResource ControlColor}" />
         <Setter Property="Foreground" Value="{StaticResource ParagraphTextGradient}" />
-        <Setter Property="FontFamily" Value="Futura"/>
+        <Setter Property="FontFamily" Value="Bahnschrift"/>
     </Style>
     <Style TargetType="TextBox" x:Key="ControlTextBoxStyle">
         <Setter Property="Background" Value="{StaticResource ControlColor}" />
         <Setter Property="Foreground" Value="{StaticResource ParagraphTextGradient}" />
-        <Setter Property="FontFamily" Value="Futura"/>
+        <Setter Property="FontFamily" Value="Bahnschrift"/>
     </Style>
 
     <Style x:Key="ControlButtonStyle" TargetType="Button">

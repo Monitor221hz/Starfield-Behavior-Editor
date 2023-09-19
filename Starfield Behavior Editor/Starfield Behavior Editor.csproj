@@ -9,6 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="MVVM\Model\Starfield\Processes\Connectors\**" />
+    <Compile Remove="MVVM\Model\Starfield\Processes\Properties\**" />
+    <EmbeddedResource Remove="MVVM\Model\Starfield\Processes\Connectors\**" />
+    <EmbeddedResource Remove="MVVM\Model\Starfield\Processes\Properties\**" />
+    <None Remove="MVVM\Model\Starfield\Processes\Connectors\**" />
+    <None Remove="MVVM\Model\Starfield\Processes\Properties\**" />
+    <Page Remove="MVVM\Model\Starfield\Processes\Connectors\**" />
+    <Page Remove="MVVM\Model\Starfield\Processes\Properties\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Assets\GUI\load.png" />
     <None Remove="Assets\GUI\open-folder.png" />
     <None Remove="Assets\GUI\save.png" />

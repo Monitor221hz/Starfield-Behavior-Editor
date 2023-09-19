@@ -26,7 +26,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 		private NodeViewModel? selectedNode;
 		private NodifyObservableCollection<NodeViewModel> selectedNodes = new NodifyObservableCollection<NodeViewModel>();
 		private NodifyObservableCollection<NodeViewModel> nodes = new NodifyObservableCollection<NodeViewModel>();
-		private NodifyObservableCollection<ConnectionViewModel> connections = new NodifyObservableCollection<ConnectionViewModel>();
+		private NodifyObservableCollection<LinkViewModel> connections = new NodifyObservableCollection<LinkViewModel>();
 		
 
 		public NodeViewModel? SelectedNode { 
@@ -35,19 +35,12 @@ namespace BehaviorEditor.MVVM.ViewModel
 			{ 
 				SetProperty(ref selectedNode, value);
 				ShowPropertyExplorer = selectedNode != null;
-				if (selectedNode != null) SelectedDataNode = selectedNode.DataNode;
 			}  
 		}
-		public TNode SelectedDataNode { 
-			get => selectedDataNode; 
-			set 
-			{
-				SetProperty(ref selectedDataNode, value);
-			}
-		}
+
 		public NodifyObservableCollection<NodeViewModel> SelectedNodes { get => selectedNodes; set => SetProperty(ref selectedNodes, value); }
 		public NodifyObservableCollection<NodeViewModel> Nodes { get => nodes; set => SetProperty(ref nodes, value); }
-		public NodifyObservableCollection<ConnectionViewModel> Connections { get => connections; set => SetProperty(ref connections, value); }
+		public NodifyObservableCollection<LinkViewModel> Connections { get => connections; set => SetProperty(ref connections, value); }
 
 		public bool ShowPropertyExplorer { get => showPropertyExplorer; set => SetProperty(ref showPropertyExplorer, value); }
 		public ICommand DisconnectConnectorCommand { get; }
@@ -55,13 +48,12 @@ namespace BehaviorEditor.MVVM.ViewModel
 		public DelegateCommand LoadCommand { get; }
 		public DelegateCommand SaveCommand { get; }
 
-
+		private TNodeCoordinator coordinator { get; set; } = new TNodeCoordinator(new RootContainer());
 
 		private BehaviorDataProvider dataProvider = new BehaviorDataProvider();
 
 		private RootContainer? root;
 		private bool showPropertyExplorer = false;
-		private TNode selectedDataNode;
 
 		public EditorViewModel()
 		{
@@ -78,15 +70,21 @@ namespace BehaviorEditor.MVVM.ViewModel
 
 		public void Connect(ConnectorViewModel source, ConnectorViewModel target)
 		{
-			Connections.Add(new ConnectionViewModel(source, target));
+			if (source == target) return;
+			var linkVM = new LinkViewModel(source, target);
+			linkVM.TryAddLink();
+			Connections.Add(linkVM);
+
 		}
 
 		public void Detach(ConnectorViewModel connector)
 		{
-			var connection = Connections.First(x => x.Source == connector || x.Target == connector);
-			connection.Source.IsConnected = false;  // This is not correct if there are multiple connections to the same connector
-			connection.Target.IsConnected = false;
-			Connections.Remove(connection);
+			var linkVM = Connections.First(x => x.Source == connector || x.Target == connector);
+			linkVM.Source.IsConnected = linkVM.TryRemoveLink(); 
+			linkVM.Target.IsConnected = false;
+			Connections.Remove(linkVM);
+
+
 		}
 
 
@@ -94,28 +92,11 @@ namespace BehaviorEditor.MVVM.ViewModel
 		{
 			foreach(var nodeVM in Nodes)
 			{
-				DisplayNodeConnections(nodeVM);
-			}
-		}
-
-		public void DisplayNodeConnections(NodeViewModel nodeVM)
-		{
-			foreach(var input in nodeVM.DataNode.Inputs)
-			{
-				DisplayLinks(nodeVM, input);
-			}
-		}
-
-		public void DisplayLinks(NodeViewModel nodeVM, TNodeInput nodeInput)
-		{
-			
-			foreach(var link in nodeInput.Links)
-			{
-				var targetNode = Nodes[link.NodeID-1];
-				if (targetNode == nodeVM) continue;
-				var targetOutput = targetNode.Outputs[link.Output];
-				var targetInput = nodeVM.Inputs[nodeInput.IDX];
-				Connections.Add(new ConnectionViewModel( targetOutput, targetInput));
+				var nodeConnections = nodeVM.GetLinkViewModels(Nodes);
+				foreach(var connection in nodeConnections)
+				{
+					Connections.Add(connection);
+				}
 			}
 		}
 
@@ -126,19 +107,22 @@ namespace BehaviorEditor.MVVM.ViewModel
 			Connections.Clear();
 			SelectedNodes.Clear();
 			root = dataProvider.LoadFile();
-
+			coordinator = new TNodeCoordinator(root);
 			for (int i = 0; i < root.Nodes.Count; i++)
 			{
 				Model.Starfield.TNode? node = root.Nodes[i];
 				node.Name += i+1;
 				Nodes.Add(new NodeViewModel(node));
 			}
+			coordinator.ResolveAll();
 			SetupConnections();
 		}
 
 		private void SaveFile()
 		{
-			if (root == null) return; 
+			if (root == null) return;
+			coordinator.TranslateAll();
+
 
 			dataProvider.SaveFile(root);	
 		}
