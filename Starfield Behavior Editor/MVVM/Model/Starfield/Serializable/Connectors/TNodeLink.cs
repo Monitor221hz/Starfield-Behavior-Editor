@@ -35,7 +35,7 @@ namespace BehaviorEditor.MVVM.Model.Starfield.Connectors
             NodeID = link.NodeID;
             Output = link.Output;
             Hidden = link.Hidden;
-
+            ConnectedNode = link.ConnectedNode;
             foreach(PropertySheet propertySheet in link.PropertySheets) { PropertySheets.Add(new PropertySheet(propertySheet)); }
         }
 
