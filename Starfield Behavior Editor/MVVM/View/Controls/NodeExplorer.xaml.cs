@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BehaviorEditor.MVVM.ViewModel;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,15 +22,15 @@ namespace BehaviorEditor.MVVM.View.Controls
 	/// </summary>
 	public partial class NodeExplorer : UserControl
 	{
-		public IEnumerable NodeSource
+		public NodeViewModel NodeSource
 		{
-			get => (IEnumerable)GetValue(NodeSourceProperty);
+			get => (NodeViewModel)GetValue(NodeSourceProperty);
 			set => SetValue(NodeSourceProperty, value);
 		}
 
 		public static readonly DependencyProperty NodeSourceProperty =
 			DependencyProperty.Register(
-				nameof(NodeSource), typeof(IEnumerable), typeof(PropertyExplorer));
+				nameof(NodeSource), typeof(NodeViewModel), typeof(NodeExplorer));
 
 		public NodeExplorer()
 		{

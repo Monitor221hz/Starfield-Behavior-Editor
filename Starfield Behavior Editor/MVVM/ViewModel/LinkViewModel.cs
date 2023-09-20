@@ -67,7 +67,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 		{
 			var input = (TNodeInput)Target.Connector;
 			input.Links.Remove(Link);
-			return (input.Links.Where(l => l.Output == Link.Output).Count() > 0); //return whether source/output still has links remaining
+			return input.Links.Any(l => l.Output == Link.Output); //return whether source/output still has links remaining
 		}
 		
 		

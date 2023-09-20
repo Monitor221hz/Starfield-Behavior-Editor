@@ -9,9 +9,7 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="800">
-    <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    </UserControl.Resources>
+
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -26,7 +24,7 @@
                   Grid.Row="0" Grid.Column="0" 
                   ItemsSource="{Binding ItemsSource,
                       RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                  Visibility="{Binding ShowPropertyExplorer, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                  
                   Background="{StaticResource ControlColor}"
                   Foreground="{StaticResource HeaderTextGradient}">
 

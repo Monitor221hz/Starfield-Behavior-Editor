@@ -29,7 +29,12 @@ namespace BehaviorEditor.MVVM.ViewModel
 
 		public Point Location
 		{
-			set => SetProperty(ref location, value);
+			set
+			{
+				SetProperty(ref location, value);
+				DataNode.ExpandedPositionX = (float)location.X/SPREAD_MULTIPLIER;
+				DataNode.ExpandedPositionY = (float)location.Y/SPREAD_MULTIPLIER;
+			}
 			get => location;
 		}
 

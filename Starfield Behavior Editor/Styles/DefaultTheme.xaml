@@ -49,6 +49,12 @@
         <Setter Property="Foreground" Value="{StaticResource ParagraphTextGradient}" />
         <Setter Property="FontFamily" Value="Bahnschrift"/>
     </Style>
+    <Style x:Key="ControlBorder" TargetType="{x:Type Border}">
+        <Setter Property="BorderBrush" Value="{StaticResource ParagraphTextGradient}" />
+    </Style>
+    <Style x:Key="HeaderBorder" TargetType="{x:Type Border}">
+        <Setter Property="BorderBrush" Value="{StaticResource HighlightGradient}" />
+    </Style>
 
     <Style x:Key="ControlButtonStyle" TargetType="Button">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
