@@ -35,6 +35,27 @@ namespace BehaviorEditor.MVVM.ViewModel
 			Link = nodeLink;
 		}
 
+		public LinkViewModel(LinkViewModel model)
+		{
+			Source = model.Source;
+			Target = model.Target;
+			Source.IsConnected = true;
+			Target.IsConnected = true;
+
+			Link = new TNodeLink(model.Link);
+		}
+		public LinkViewModel(LinkViewModel model, ConnectorViewModel source, ConnectorViewModel target)
+		{
+			Source = source;
+			Target = target;
+			Source.IsConnected = true;
+			Target.IsConnected = true;
+
+			Link = new TNodeLink(model.Link);
+			Link.ConnectedNode = Source.ParentNode;
+			
+		}
+
 		public void TryAddLink()
 		{
 			var input = (TNodeInput)Target.Connector;

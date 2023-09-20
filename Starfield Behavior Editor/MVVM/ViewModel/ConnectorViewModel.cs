@@ -50,6 +50,12 @@ namespace BehaviorEditor.MVVM.ViewModel
 			Name = connector.Name;
 		}
 
+		public ConnectorViewModel(ConnectorViewModel connectorViewModel)
+		{
+			ParentNode = connectorViewModel.ParentNode;
+			Connector = connectorViewModel.Connector;
+			Name = connectorViewModel.Name;
+		}
 		public void GetViewModels(NodeViewModel nodeVM, List<NodeViewModel> nodes, List<LinkViewModel> linkVMs)
 		{
 
