@@ -13,5 +13,12 @@ namespace BehaviorEditor.MVVM.Model.Starfield
     {
         [XmlElement(ElementName = "idx", Order =1)]
         public int IDX { get; set;  }
+
+        internal NodeGroupMember() { }
+
+        public NodeGroupMember(NodeGroupMember nodeGroupMember)
+        {
+            IDX = nodeGroupMember.IDX;
+        }
     }
 }

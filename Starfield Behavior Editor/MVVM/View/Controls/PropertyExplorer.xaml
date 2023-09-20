@@ -109,7 +109,8 @@
                                                     Style="{StaticResource ControlTextBoxStyle}"
                                                     FontSize="13"
                                                     Padding="5 5 5 5"
-                                                    BorderThickness="2">
+                                                    BorderThickness="2"
+                                                    Foreground="WhiteSmoke">
                                                     </TextBox>
                                                 </DataTemplate>
                                             </ListView.ItemTemplate>

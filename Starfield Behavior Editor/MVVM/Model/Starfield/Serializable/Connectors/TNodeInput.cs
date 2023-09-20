@@ -13,7 +13,7 @@ namespace BehaviorEditor.MVVM.Model.Starfield.Connectors
 	public class TNodeInput : TNodeConnector
 	{
 		[XmlElement(ElementName = "name", Order = 1, IsNullable = true)]
-		public string Name { get; set; }
+		public string Name { get; set; } = string.Empty;
 
 		[XmlElement(ElementName = "id", Order = 2)]
 		public int ID { get; set; }
@@ -24,6 +24,16 @@ namespace BehaviorEditor.MVVM.Model.Starfield.Connectors
 		[XmlElement(ElementName = "link", Order = 4)]
 		public List<TNodeLink> Links { get; set; } = new List<TNodeLink>();
 
+		internal TNodeInput() { }
 
+		public TNodeInput(TNodeInput input)
+		{
+			Name = input.Name;
+			ID = input.ID;
+			IDX = input.IDX;
+			
+			foreach (TNodeLink link in input.Links) { Links.Add(new TNodeLink(link)); };
+
+		}
 	}
 }

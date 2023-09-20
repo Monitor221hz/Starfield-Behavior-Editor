@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-
+#nullable disable
 namespace BehaviorEditor.MVVM.Model.Starfield.Connectors
 {
     [Serializable]
@@ -18,15 +18,26 @@ namespace BehaviorEditor.MVVM.Model.Starfield.Connectors
         [XmlElement(ElementName = "output", Order =2)]
         public int Output { get; set; }
 
-        [XmlElement(ElementName = "hidden", Order =3)]
-        public string Hidden { get; set; }
+        [XmlElement(ElementName = "hidden", Order = 3)]
+        public string Hidden { get; set; } = string.Empty;
 
         [XmlElement(ElementName ="property_sheet", Order =4)]
-        public List<PropertySheet> PropertySheets { get; set; }
+        public List<PropertySheet> PropertySheets { get; set; } = new List<PropertySheet>();
 
 
         [XmlIgnore]
         public TNode ConnectedNode { get; set; }
+
+        internal TNodeLink() { }
+
+        public TNodeLink(TNodeLink link)
+        {
+            NodeID = link.NodeID;
+            Output = link.Output;
+            Hidden = link.Hidden;
+
+            foreach(PropertySheet propertySheet in link.PropertySheets) { PropertySheets.Add(new PropertySheet(propertySheet)); }
+        }
 
 
 

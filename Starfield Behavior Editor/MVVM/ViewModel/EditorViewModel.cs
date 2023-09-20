@@ -110,8 +110,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 			coordinator = new TNodeCoordinator(root);
 			for (int i = 0; i < root.Nodes.Count; i++)
 			{
-				Model.Starfield.TNode? node = root.Nodes[i];
-				node.Name += i+1;
+				TNode node = root.Nodes[i];
 				Nodes.Add(new NodeViewModel(node));
 			}
 			coordinator.ResolveAll();

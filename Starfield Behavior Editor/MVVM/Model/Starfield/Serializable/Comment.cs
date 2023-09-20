@@ -12,7 +12,7 @@ namespace BehaviorEditor.MVVM.Model.Starfield
 	public class Comment
 	{
 		[XmlElement(ElementName = "text")]
-		public string Text {  get; set; }
+		public string Text { get; set; } = string.Empty;
 
 		[XmlElement(ElementName = "X")]
 		public float X {  get; set; }
@@ -30,5 +30,17 @@ namespace BehaviorEditor.MVVM.Model.Starfield
 		public float TargetY { get; set; } = 0.0f;
 
 		public bool TargetYSpecified => TargetX != 0.0f;
+
+		internal Comment() { }
+
+		public Comment(Comment comment)
+		{
+			Text = comment.Text;
+			X = comment.X;
+			Y = comment.Y;
+			TargetX = comment.TargetX;
+			TargetY = comment.TargetY;
+		}
+
 	}
 }

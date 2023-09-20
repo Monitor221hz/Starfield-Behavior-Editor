@@ -18,5 +18,13 @@ namespace BehaviorEditor.MVVM.Model.Starfield.Properties
         [XmlElement(ElementName = "types", Order =2)]
 
         public int Types { get; set; } = 0; 
+
+        internal Column() { } 
+            
+        public Column(Column column) 
+        { 
+            Header = column.Header;
+            Types = column.Types;
+        }
     }
 }

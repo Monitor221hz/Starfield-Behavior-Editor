@@ -12,6 +12,13 @@ namespace BehaviorEditor.MVVM.Model.Starfield
 	public class BlendInput
 	{
 		[XmlElement("point", Order =1)]
-		public List<TPoint> Points { get; set; }
+		public List<TPoint> Points { get; set; } = new List<TPoint>();
+
+		internal BlendInput() { }
+
+		public BlendInput(BlendInput blendInput)
+		{
+			foreach(TPoint point in blendInput.Points) { Points.Add(new TPoint(point));  }
+		}
 	}
 }

@@ -22,11 +22,23 @@ namespace BehaviorEditor.MVVM.Model
 		[XmlElement(ElementName = "node_group", Order = 3)]
 		public List<NodeGroup> NodeGroups { get; set; } = new List<NodeGroup>();
 
-		[XmlElement(ElementName ="comment", Order =4)]
-        public List<Comment> Comments { get; set; }
+        [XmlElement(ElementName = "comment", Order = 4)]
+        public List<Comment> Comments { get; set; } = new List<Comment>();
 
         [XmlElement(ElementName ="property_sheet", Order =5)]
         public List<PropertySheet> PropertySheets { get; set; } = new List<PropertySheet>();
+
+        internal Graph() { }
+
+        public Graph(Graph graph)
+        {
+            LinkStyle = graph.LinkStyle;
+            foreach(TNode node in graph.Nodes) { Nodes.Add(new TNode(node));  }
+            foreach(NodeGroup nodeGroup in graph.NodeGroups) {  NodeGroups.Add(new NodeGroup(nodeGroup)); }
+            foreach(Comment comment in graph.Comments) { Comments.Add(new Comment(comment)); }
+            foreach(PropertySheet propertySheet in graph.PropertySheets) { PropertySheets.Add(new PropertySheet(propertySheet)); }
+        }
+
 
 
         

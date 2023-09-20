@@ -22,5 +22,12 @@ namespace BehaviorEditor.MVVM.Model.Starfield.Properties
 
             return outProperty != null;
         }
+
+        internal Row() { }
+
+        public Row(Row row)
+        {
+            foreach(Property property in row.Properties) { Properties.Add(new Property(property)); }
+        }
     }
 }

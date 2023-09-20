@@ -16,6 +16,14 @@ namespace BehaviorEditor.MVVM.Model.Starfield
 
 		[XmlElement(ElementName = "Weight",Order =2)]
 		public float Weight {  get; set; }
+
+		public TPoint() { }
+
+		public TPoint(TPoint point)
+		{
+			Range = point.Range;
+			Weight = point.Weight;
+		}
 	}
 
 }

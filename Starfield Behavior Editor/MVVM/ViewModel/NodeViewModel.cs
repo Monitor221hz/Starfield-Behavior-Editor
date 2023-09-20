@@ -25,7 +25,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 		private NodifyObservableCollection<ConnectorViewModel> inputs = new NodifyObservableCollection<ConnectorViewModel>();
 		private NodifyObservableCollection<ConnectorViewModel> outputs = new NodifyObservableCollection<ConnectorViewModel>();
 		private NodifyObservableCollection<PropertySheetViewModel> propertySheets = new NodifyObservableCollection<PropertySheetViewModel>();
-		private string name;
+		private string name = "DefaultNode";
 
 		public Point Location
 		{
@@ -78,6 +78,6 @@ namespace BehaviorEditor.MVVM.ViewModel
 			}
 			return linkVMs;
 		}
-		public NodeViewModel(string name)  => Name = name;
+
 	}
 }

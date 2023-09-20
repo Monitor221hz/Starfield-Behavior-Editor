@@ -12,14 +12,22 @@ namespace BehaviorEditor.MVVM.Model.Starfield
     public class NodeGroup
     {
         [XmlElement(ElementName = "name", Order =1)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        [XmlElement(ElementName = "collapsed", Order =2)]
-        public string Collapsed { get; set; }
+        [XmlElement(ElementName = "collapsed", Order = 2)]
+        public string Collapsed { get; set; } = string.Empty;
 
         [XmlElement(ElementName = "node", Order =3)]
-        public List<NodeGroupMember> Members {  get; set; }
+        public List<NodeGroupMember> Members {  get; set; } = new List<NodeGroupMember>();
 
-        
+        internal NodeGroup() { }    
+
+        public NodeGroup(NodeGroup group)
+        {
+            Name = group.Name;
+            Collapsed = group.Collapsed;
+
+            foreach(NodeGroupMember member in group.Members) { Members.Add(new NodeGroupMember(member));}
+        }
     }
 }

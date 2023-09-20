@@ -12,11 +12,11 @@ namespace BehaviorEditor.MVVM.Model.Starfield
     [XmlRoot(ElementName = "root")]
     public class RootContainer
     {
-        [XmlElement(ElementName = "Name", Order =1)]
-        public string Name { get; set; }
+        [XmlElement(ElementName = "Name", Order = 1)]
+        public string Name { get; set; } = "NewRoot";
 
-        [XmlElement(ElementName = "Category", Order =2)]
-        public string Category {  get; set; }
+        [XmlElement(ElementName = "Category", Order = 2)]
+        public string Category { get; set; } = "Default";
 
         [XmlElement(ElementName = "Link_Style", Order =3)]
         public int LinkStyle { get; set; }
@@ -32,6 +32,19 @@ namespace BehaviorEditor.MVVM.Model.Starfield
 
         [XmlElement(ElementName = "property_sheet", Order = 7)]
         public List<PropertySheet> PropertySheets { get; set; } = new List<PropertySheet>();
+
+        internal RootContainer() { }
+
+        public RootContainer(RootContainer container)
+        {
+            Name = container.Name;
+            Category = container.Category;
+            LinkStyle = container.LinkStyle;
+            foreach(TNode node in container.Nodes) {  Nodes.Add(new TNode(node)); }
+            foreach(NodeGroup nodeGroup in container.NodeGroups) { NodeGroups.Add(new NodeGroup(nodeGroup));  }
+            foreach(Comment nodeComment in container.Comments) { Comments.Add(new Comment(nodeComment)); }
+            foreach(PropertySheet propertySheet in container.PropertySheets) { PropertySheets.Add(new PropertySheet(propertySheet)); }
+        }
         
     }
 }

@@ -27,6 +27,15 @@ namespace BehaviorEditor.MVVM.Model.Starfield.Properties
 
         internal PropertySheet() { }
 
+        public PropertySheet(PropertySheet sheet)
+        {
+            NumColumns = sheet.NumColumns;
+
+            foreach (Column column in sheet.Columns) { Columns.Add(new Column(column)); }
+
+            foreach (Row row in sheet.Rows) {  Rows.Add(new Row(row)); }
+        }
+
         public bool FindLocalPropertyByValue(string value, out Property? outProperty)
         {
             foreach(Row row in Rows)

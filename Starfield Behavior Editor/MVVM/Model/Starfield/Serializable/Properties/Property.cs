@@ -24,6 +24,15 @@ namespace BehaviorEditor.MVVM.Model.Starfield.Properties
         [XmlElement(ElementName = "listindex", Order = 3)]
         public int ListIndex { get; set; } = -1;
 
+        internal Property() { }
+
+        public Property(Property property)
+        {
+            Type = property.Type;
+            RawValue = property.RawValue;
+            ListIndex = property.ListIndex;
+        }
+
         public bool ShouldSerializeListIndex()
         {
             return ListIndex != -1;
