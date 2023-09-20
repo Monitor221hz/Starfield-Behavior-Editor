@@ -71,7 +71,17 @@ namespace BehaviorEditor.MVVM.ViewModel
 		public void Connect(ConnectorViewModel source, ConnectorViewModel target)
 		{
 			if (source == target) return;
-			var linkVM = new LinkViewModel(source, target);
+			LinkViewModel? existingLinkVM = Connections.Where(c => c.Source == source).FirstOrDefault();
+			LinkViewModel linkVM;
+			if (existingLinkVM != null)
+			{
+				Detach(source);
+				linkVM = new LinkViewModel(existingLinkVM, source, target);
+			}
+			else
+			{
+				linkVM = new LinkViewModel(source, target);
+			}
 			linkVM.TryAddLink();
 			Connections.Add(linkVM);
 
@@ -83,8 +93,6 @@ namespace BehaviorEditor.MVVM.ViewModel
 			linkVM.Source.IsConnected = linkVM.TryRemoveLink(); 
 			linkVM.Target.IsConnected = false;
 			Connections.Remove(linkVM);
-
-
 		}
 
 
@@ -111,6 +119,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 			for (int i = 0; i < root.Nodes.Count; i++)
 			{
 				TNode node = root.Nodes[i];
+				node.Name += i+1;
 				Nodes.Add(new NodeViewModel(node));
 			}
 			coordinator.ResolveAll();
