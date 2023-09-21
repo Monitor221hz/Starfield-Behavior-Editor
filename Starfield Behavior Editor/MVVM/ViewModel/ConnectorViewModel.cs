@@ -25,6 +25,8 @@ namespace BehaviorEditor.MVVM.ViewModel
 		}
 
 		private bool isConnected;
+		private NodifyObservableCollection<LinkViewModel> linkViewModels = new NodifyObservableCollection<LinkViewModel>();
+
 		public bool IsConnected
 		{
 			set
@@ -40,7 +42,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 
 		public string Name { get; set; }
 
-
+		public NodifyObservableCollection<LinkViewModel> LinkViewModels { get => linkViewModels; set => SetProperty(ref linkViewModels, value); }
 
 
 		public ConnectorViewModel(TNode node, TNodeConnector connector)
@@ -58,9 +60,6 @@ namespace BehaviorEditor.MVVM.ViewModel
 		}
 		public void GetViewModels(NodeViewModel nodeVM, List<NodeViewModel> nodes, List<LinkViewModel> linkVMs)
 		{
-
-
-
 			if (Connector is not TNodeInput) return;
 
 			var input = (TNodeInput)Connector;
@@ -73,7 +72,9 @@ namespace BehaviorEditor.MVVM.ViewModel
 				if (targetNode == nodeVM) continue;
 				var targetOutput = targetNode.OutputViewModels[link.Output];
 				var targetInput = nodeVM.InputViewModels[Connector.IDX];
-				tempLinkVMs.Add(new LinkViewModel(targetOutput, targetInput, link));
+				var linkVM = new LinkViewModel(targetOutput, targetInput, link);
+				LinkViewModels.Add(linkVM);
+				tempLinkVMs.Add(linkVM);
 			}
 			foreach (var linkVM in tempLinkVMs)
 			{

@@ -24,7 +24,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 		private Point location;
 		private NodifyObservableCollection<ConnectorViewModel> inputs = new NodifyObservableCollection<ConnectorViewModel>();
 		private NodifyObservableCollection<ConnectorViewModel> outputs = new NodifyObservableCollection<ConnectorViewModel>();
-		private NodifyObservableCollection<PropertySheetViewModel> propertySheets = new NodifyObservableCollection<PropertySheetViewModel>();
+		private NodifyObservableCollection<PropertySheetViewModel> propertySheetViewModels = new NodifyObservableCollection<PropertySheetViewModel>();
 		private string name = "DefaultNode";
 
 		public Point Location
@@ -52,7 +52,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 		public NodifyObservableCollection<ConnectorViewModel> OutputViewModels { get => outputs; set => SetProperty(ref outputs, value); }
 
 		
-		public NodifyObservableCollection<PropertySheetViewModel> PropertySheets { get => propertySheets; set => SetProperty(ref propertySheets, value); }
+		public NodifyObservableCollection<PropertySheetViewModel> PropertySheetViewModels { get => propertySheetViewModels; set => SetProperty(ref propertySheetViewModels, value); }
 		public NodeViewModel(TNode node)
 		{
 			DataNode = node;
@@ -69,7 +69,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 			}
 			foreach (PropertySheet sheet in node.PropertySheets)
 			{
-				PropertySheets.Add(new PropertySheetViewModel(sheet));
+				PropertySheetViewModels.Add(new PropertySheetViewModel(sheet));
 			}
 
 		}

@@ -26,11 +26,19 @@ namespace BehaviorEditor.MVVM.ViewModel
 			} 
 		}
 
+		public Property Property { get => property; set => SetProperty(ref property, value); }
+
 		public PropertyViewModel(Property prop)
 		{
 			property = prop;
 			value = prop.RawValue;
 
+		}
+
+		public PropertyViewModel(PropertyViewModel propVM)
+		{
+			Property = propVM.Property;
+			Value = propVM.Value;
 		}
 
 

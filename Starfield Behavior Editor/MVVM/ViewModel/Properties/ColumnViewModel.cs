@@ -14,22 +14,30 @@ namespace BehaviorEditor.MVVM.ViewModel
     {
 		private string header;
 
-		private Column column { get; set; }
+		private Column dataColumn;
 
 		public string Header 
 		{ 
-			get => column.Header;
+			get => dataColumn.Header;
 			set 
 			{
 				SetProperty(ref header, value);
-				column.Header = value;
+				dataColumn.Header = value;
 			}
 		}
 
+		public Column DataColumn { get => dataColumn; set => SetProperty(ref dataColumn, value); }
+
 		public ColumnViewModel(Column column)
 		{
-			this.column= column;	
+			DataColumn= column;	
 			header = column.Header;	
+		}
+
+		public ColumnViewModel(ColumnViewModel columnVM)
+		{
+			DataColumn = columnVM.DataColumn;
+			Header = columnVM.Header;
 		}
 	}
 }

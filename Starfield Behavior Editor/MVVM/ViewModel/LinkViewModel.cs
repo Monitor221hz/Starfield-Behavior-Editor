@@ -5,13 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using BehaviorEditor.MVVM.Model.Starfield;
 using BehaviorEditor.MVVM.Model.Starfield.Connectors;
+using Nodify;
 
 namespace BehaviorEditor.MVVM.ViewModel
 {
-	public class LinkViewModel
+	public class LinkViewModel : ObservableObject
 	{
+		private NodifyObservableCollection<PropertySheetViewModel> propertySheetViewModels = new NodifyObservableCollection<PropertySheetViewModel> ();
+
 
 		public TNodeLink Link { get; private set; }
+		public NodifyObservableCollection<PropertySheetViewModel> PropertySheetViewModels { get => propertySheetViewModels; set => SetProperty(ref propertySheetViewModels, value); }
 
 
 		public LinkViewModel(ConnectorViewModel source, ConnectorViewModel target)
@@ -33,6 +37,10 @@ namespace BehaviorEditor.MVVM.ViewModel
 			Target.IsConnected = true;
 
 			Link = nodeLink;
+			foreach(var sheet in Link.PropertySheets)
+			{
+				PropertySheetViewModels.Add(new PropertySheetViewModel(sheet));
+			}
 		}
 
 		public LinkViewModel(LinkViewModel model)
@@ -50,7 +58,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 			Target = target;
 			Source.IsConnected = true;
 			Target.IsConnected = true;
-
+			foreach(var sheetVM in model.PropertySheetViewModels) { PropertySheetViewModels.Add(new PropertySheetViewModel(sheetVM));  }
 			Link = new TNodeLink(model.Link);
 			Link.ConnectedNode = Source.ParentNode;
 			

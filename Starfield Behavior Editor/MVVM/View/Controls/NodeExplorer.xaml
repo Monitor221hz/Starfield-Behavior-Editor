@@ -10,31 +10,36 @@
         <RelativeSource x:Key="RelativeSourceToParent" Mode="FindAncestor" AncestorType="{x:Type local:NodeExplorer}" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
-    <Grid Background="{StaticResource ControlColor}" Visibility="{Binding ShowPropertyExplorer, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid Background="{StaticResource ControlColor}" Visibility="{Binding ShowPropertyExplorer, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Background="{StaticResource ControlColor}" Margin="20 0 0 5">
-            <StackPanel Orientation="Horizontal">
-                <Border Style="{StaticResource HeaderBorder}" BorderThickness="3" Margin="0 5 5 5">
-                    <TextBlock Text="Name:" Style="{StaticResource HighlightTextBlockStyle}" FontSize="13" Padding="5" ></TextBlock>
-                </Border>
-                <TextBox  Text="{Binding RelativeSource={StaticResource RelativeSourceToParent},Path=NodeSource.Name, Mode=TwoWay}" Style="{StaticResource ControlTextBoxStyle}" FontSize="13" Margin="5" BorderThickness="2" Padding="5"></TextBox>
+            <StackPanel Grid.Row="0" Background="{StaticResource ControlColor}" Margin="20 0 0 5">
+                <StackPanel Orientation="Horizontal">
+                    <Border Style="{StaticResource HeaderBorder}" BorderThickness="3" Margin="0 5 5 5">
+                        <TextBlock Text="Name:" Style="{StaticResource HighlightTextBlockStyle}" FontSize="13" Padding="5" ></TextBlock>
+                    </Border>
+                    <TextBox  Text="{Binding RelativeSource={StaticResource RelativeSourceToParent},Path=NodeSource.Name, Mode=TwoWay}" Style="{StaticResource ControlTextBoxStyle}" FontSize="13" Margin="5" BorderThickness="2" Padding="5"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Border Style="{StaticResource HeaderBorder}" BorderThickness="3" Margin="0 5 5 5">
+                        <TextBlock Text="X:" Style="{StaticResource HighlightTextBlockStyle}" FontSize="13" Padding="5" ></TextBlock>
+                    </Border>
+                    <TextBox  Text="{Binding RelativeSource={StaticResource RelativeSourceToParent},Path=NodeSource.Location.X, Mode=TwoWay,StringFormat=N2}" Style="{StaticResource ControlTextBoxStyle}" FontSize="13" Margin="5" BorderThickness="2" Padding="5"></TextBox>
+                    <Border Style="{StaticResource HeaderBorder}" BorderThickness="3" Margin="10 5 5 5">
+                        <TextBlock Text="Y:" Style="{StaticResource HighlightTextBlockStyle}" FontSize="13" Padding="5" ></TextBlock>
+                    </Border>
+                    <TextBox  Text="{Binding RelativeSource={StaticResource RelativeSourceToParent},Path=NodeSource.Location.Y, Mode=TwoWay,StringFormat=N2}" Style="{StaticResource ControlTextBoxStyle}" FontSize="13" Margin="5" BorderThickness="2" Padding="5"></TextBox>
+                </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Border Style="{StaticResource HeaderBorder}" BorderThickness="3" Margin="0 5 5 5">
-                    <TextBlock Text="X:" Style="{StaticResource HighlightTextBlockStyle}" FontSize="13" Padding="5" ></TextBlock>
-                </Border>
-                <TextBox  Text="{Binding RelativeSource={StaticResource RelativeSourceToParent},Path=NodeSource.Location.X, Mode=TwoWay,StringFormat=N2}" Style="{StaticResource ControlTextBoxStyle}" FontSize="13" Margin="5" BorderThickness="2" Padding="5"></TextBox>
-                <Border Style="{StaticResource HeaderBorder}" BorderThickness="3" Margin="10 5 5 5">
-                    <TextBlock Text="Y:" Style="{StaticResource HighlightTextBlockStyle}" FontSize="13" Padding="5" ></TextBlock>
-                </Border>
-                <TextBox  Text="{Binding RelativeSource={StaticResource RelativeSourceToParent},Path=NodeSource.Location.Y, Mode=TwoWay,StringFormat=N2}" Style="{StaticResource ControlTextBoxStyle}" FontSize="13" Margin="5" BorderThickness="2" Padding="5"></TextBox>
-            </StackPanel>
-        </StackPanel>
 
-        <local:PropertyExplorer Grid.Row="1" ItemsSource="{Binding RelativeSource={StaticResource RelativeSourceToParent},Path=NodeSource.PropertySheets}"></local:PropertyExplorer>
-    </Grid>
+            <local:PropertyExplorer Grid.Row="1" ItemsSource="{Binding RelativeSource={StaticResource RelativeSourceToParent},Path=NodeSource.PropertySheetViewModels}"></local:PropertyExplorer>
+            <local:LinkExplorer Grid.Row="2" ItemsSource="{Binding RelativeSource={StaticResource RelativeSourceToParent},Path=NodeSource.InputViewModels}"></local:LinkExplorer>
+
+        </Grid>
+    </ScrollViewer>
 </UserControl>

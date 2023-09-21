@@ -15,8 +15,8 @@ namespace BehaviorEditor.MVVM.ViewModel
     {
 		private NodifyObservableCollection<RowViewModel> rows = new NodifyObservableCollection<RowViewModel>();
 		private NodifyObservableCollection<ColumnViewModel> columns = new NodifyObservableCollection<ColumnViewModel>();
-		
-		private PropertySheet propertySheet { get; set;  }
+
+		private PropertySheet propertySheet;
 
 		
 		public NodifyObservableCollection<RowViewModel> RowViewModels { get => rows; set => SetProperty(ref rows, value); }
@@ -29,6 +29,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 		public DelegateCommand<RowViewModel> RemoveRowCommand { get; set; }
 
 		public DelegateCommand AddRowCommand { get; set; }
+		public PropertySheet PropertySheetData { get => propertySheet; set => SetProperty(ref propertySheet, value); }
 
 		public PropertySheetViewModel(PropertySheet propertySheet)
         {
@@ -45,6 +46,16 @@ namespace BehaviorEditor.MVVM.ViewModel
 			{
 				RowViewModels.Add(new RowViewModel(ColumnViewModels.Count, row, RemoveRowCommand));
 			}
+		}
+
+		public PropertySheetViewModel(PropertySheetViewModel model)
+		{
+			RemoveRowCommand = new DelegateCommand<RowViewModel>(RemoveRow);
+			AddRowCommand = new DelegateCommand(AddRow);
+			foreach (var rowVM in model.RowViewModels) { RowViewModels.Add(new RowViewModel(rowVM)); }
+			foreach(var columnVM in model.ColumnViewModels) { ColumnViewModels.Add(new ColumnViewModel(columnVM));}
+			PropertySheetData = model.PropertySheetData;
+			
 		}
 		public void RemoveRow(RowViewModel rowVM)
 		{

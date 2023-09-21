@@ -76,12 +76,17 @@ namespace BehaviorEditor.MVVM.ViewModel
 			if (existingLinkVM != null)
 			{
 				Detach(source);
+				
+				bool suc1 = existingLinkVM.Target.LinkViewModels.Remove(existingLinkVM);
+				bool suc2 = existingLinkVM.Source.LinkViewModels.Remove(existingLinkVM);
 				linkVM = new LinkViewModel(existingLinkVM, source, target);
 			}
 			else
 			{
 				linkVM = new LinkViewModel(source, target);
 			}
+			target.LinkViewModels.Add(linkVM);
+			source.LinkViewModels.Add(linkVM);
 			linkVM.TryAddLink();
 			Connections.Add(linkVM);
 
@@ -92,6 +97,8 @@ namespace BehaviorEditor.MVVM.ViewModel
 			var linkVM = Connections.First(x => x.Source == connector || x.Target == connector);
 			linkVM.Source.IsConnected = linkVM.TryRemoveLink(); 
 			linkVM.Target.IsConnected = false;
+
+			bool removed = connector.LinkViewModels.Remove(linkVM);
 			Connections.Remove(linkVM);
 		}
 

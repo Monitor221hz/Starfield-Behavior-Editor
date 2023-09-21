@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="BehaviorEditor.MVVM.View.Controls.LinkExplorer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BehaviorEditor.MVVM.View.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <ListView VerticalContentAlignment="Bottom" 
+                  HorizontalContentAlignment="Stretch" 
+                  Grid.Row="0" Grid.Column="0" 
+                  ItemsSource="{Binding ItemsSource,
+                      RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                  
+                  Background="{StaticResource ControlColor}"
+                  Foreground="{StaticResource HeaderTextGradient}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <ListView Grid.Column="0" ItemsSource="{Binding LinkViewModels}" Grid.Row="0"
+                                  Background="{StaticResource ControlColor}"
+                                  Foreground="{StaticResource HighlightGradient}"
+                                  BorderBrush="{StaticResource HighlightGradient}"
+                                  BorderThickness="3"
+                                  HorizontalContentAlignment="Stretch">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="Link" 
+                                               Width="140" 
+                                               HorizontalAlignment="Stretch"
+                                               Padding="10 5 5 5"
+                                               FontSize="13"
+                                               Style="{StaticResource HighlightTextBlockStyle}"></TextBlock>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <ListView Grid.Column="0" ItemsSource="{Binding LinkViewModels}" Grid.Row="1"
+                                  Background="{StaticResource ControlColor}"
+                                  Foreground="{StaticResource HighlightGradient}"
+                                  BorderBrush="{StaticResource HighlightGradient}"
+                                  BorderThickness="3"
+                                  HorizontalContentAlignment="Stretch">
+                            <ListView.ItemTemplate>
+                                
+                                <DataTemplate>
+                                    <local:PropertyExplorer ItemsSource="{Binding PropertySheetViewModels}"></local:PropertyExplorer>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        
+                    </Grid>
+                    
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>
