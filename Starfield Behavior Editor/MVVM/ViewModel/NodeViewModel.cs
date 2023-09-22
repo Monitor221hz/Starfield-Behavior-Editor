@@ -51,21 +51,21 @@ namespace BehaviorEditor.MVVM.ViewModel
 		public NodifyObservableCollection<ConnectorViewModel> InputViewModels { get => inputs; set => SetProperty(ref inputs, value); }
 		public NodifyObservableCollection<ConnectorViewModel> OutputViewModels { get => outputs; set => SetProperty(ref outputs, value); }
 
-		
+		public GraphViewModel? GraphViewModelData { get; set; }
 		public NodifyObservableCollection<PropertySheetViewModel> PropertySheetViewModels { get => propertySheetViewModels; set => SetProperty(ref propertySheetViewModels, value); }
 		public NodeViewModel(TNode node)
 		{
 			DataNode = node;
 			Name = node.Name;
 			Location = new Point(node.ExpandedPositionX*SPREAD_MULTIPLIER, node.ExpandedPositionY*SPREAD_MULTIPLIER);
-
+			if (node.Graph != null) { GraphViewModelData = new GraphViewModel(node.Graph); }
 			foreach (TNodeInput input in node.Inputs)
 			{
-				InputViewModels.Add(new ConnectorViewModel(node, input));
+				InputViewModels.Add(new ConnectorViewModel(this, input));
 			}
 			foreach (TNodeOutput output in node.Outputs)
 			{
-				OutputViewModels.Add(new ConnectorViewModel(node, output));
+				OutputViewModels.Add(new ConnectorViewModel(this, output));
 			}
 			foreach (PropertySheet sheet in node.PropertySheets)
 			{
@@ -73,14 +73,37 @@ namespace BehaviorEditor.MVVM.ViewModel
 			}
 
 		}
+		public NodeViewModel(NodeViewModel model)
+		{
+			DataNode = model.DataNode;
+			Name = model.Name;
+			Location = new Point(model.Location.X + 5.0, model.Location.Y + 5.0);
+			if (model.GraphViewModelData != null) { GraphViewModelData = new GraphViewModel(model.GraphViewModelData); }
 
+			foreach(var inputVM in model.InputViewModels) { InputViewModels.Add(new ConnectorViewModel(inputVM)); }
+			foreach(var outputVM in model.OutputViewModels) { OutputViewModels.Add(new ConnectorViewModel(outputVM));  }
+			foreach(var sheetVM in model.PropertySheetViewModels) { PropertySheetViewModels.Add(new PropertySheetViewModel(sheetVM)); }
+		}
+
+		public List<NodeViewModel> GetNestedNodeViewModels() => GraphViewModelData?.NodeViewModels.ToList();
 		public List<LinkViewModel> GetLinkViewModels(Collection<NodeViewModel> nodes)
 		{
 			List<LinkViewModel> linkVMs = new List<LinkViewModel>();
-			foreach(var inputVM in InputViewModels)
+
+
+			foreach (var inputVM in InputViewModels)
 			{
 				inputVM.GetViewModels(this, nodes.ToList(), linkVMs);
 			}
+
+			//if (GraphViewModelData != null)
+			//{
+			//	nodes = GraphViewModelData.NodeViewModels;
+			//	foreach (var nodeVM in nodes)
+			//	{
+			//		linkVMs.AddRange(nodeVM.GetLinkViewModels(GraphViewModelData.NodeViewModels));
+			//	}
+			//}
 			return linkVMs;
 		}
 

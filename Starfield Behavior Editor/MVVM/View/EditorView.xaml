@@ -32,14 +32,14 @@
 
         
         <controls:ApplicationFlowBar Grid.Row="0" Grid.ColumnSpan="2"></controls:ApplicationFlowBar>
-        <controls:NodeExplorer NodeSource="{Binding SelectedNode}" x:Name="Explorer"  Grid.Column="1" Grid.Row="1"></controls:NodeExplorer>
-        <nodify:NodifyEditor ItemsSource ="{Binding Nodes}" 
-                             Connections="{Binding Connections}" 
+        <controls:NodeExplorer NodeSource="{Binding SelectedNodeViewModel}" x:Name="Explorer"  Grid.Column="1" Grid.Row="1"></controls:NodeExplorer>
+        <nodify:NodifyEditor ItemsSource ="{Binding NodeViewModels}" 
+                             Connections="{Binding ConnectionViewModels}" 
                              PendingConnection="{Binding PendingConnection}" 
                              DisconnectConnectorCommand="{Binding DisconnectConnectorCommand}" 
                              Grid.Row="1" Background="{StaticResource BackgroundVerticalGradient}"
                              SelectedItems="{Binding SelectedNodes, UpdateSourceTrigger=PropertyChanged}"
-                             SelectedItem="{Binding SelectedNode}"   
+                             SelectedItem="{Binding SelectedNodeViewModel}"   
                              FontFamily="Bahnschrift"
                              >
 

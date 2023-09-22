@@ -23,6 +23,7 @@ namespace BehaviorEditor.MVVM.Model.Starfield
 			}
 		}
 
+
 		public void ResolveNode(TNode node)
 		{
 			foreach(var input in node.Inputs)

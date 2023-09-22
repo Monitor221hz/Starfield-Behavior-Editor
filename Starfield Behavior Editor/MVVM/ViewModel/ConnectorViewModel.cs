@@ -38,23 +38,23 @@ namespace BehaviorEditor.MVVM.ViewModel
 
 		public TNodeConnector Connector {  get; set; }	
 
-		public TNode ParentNode { get; private set; }
+		public NodeViewModel ParentNodeViewModel { get; private set; }
 
 		public string Name { get; set; }
 
 		public NodifyObservableCollection<LinkViewModel> LinkViewModels { get => linkViewModels; set => SetProperty(ref linkViewModels, value); }
 
 
-		public ConnectorViewModel(TNode node, TNodeConnector connector)
+		public ConnectorViewModel(NodeViewModel nodeVM, TNodeConnector connector)
 		{
-			ParentNode = node;
+			ParentNodeViewModel = nodeVM;
 			Connector = connector;
 			Name = connector.Name;
 		}
 
 		public ConnectorViewModel(ConnectorViewModel connectorViewModel)
 		{
-			ParentNode = connectorViewModel.ParentNode;
+			ParentNodeViewModel = connectorViewModel.ParentNodeViewModel;
 			Connector = connectorViewModel.Connector;
 			Name = connectorViewModel.Name;
 		}

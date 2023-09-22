@@ -17,7 +17,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 		public TNodeLink Link { get; private set; }
 		public NodifyObservableCollection<PropertySheetViewModel> PropertySheetViewModels { get => propertySheetViewModels; set => SetProperty(ref propertySheetViewModels, value); }
 
-
+		
 		public LinkViewModel(ConnectorViewModel source, ConnectorViewModel target)
 		{
 			Source = source;
@@ -25,7 +25,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 
 			Source.IsConnected = true;
 			Target.IsConnected = true;
-			Link = new TNodeLink() { ConnectedNode = target.ParentNode, Output = source.Connector.IDX };
+			Link = new TNodeLink() { ConnectedNode = target.ParentNodeViewModel.DataNode, Output = source.Connector.IDX };
 
 		}
 		public LinkViewModel(ConnectorViewModel source, ConnectorViewModel target, TNodeLink nodeLink)
@@ -60,7 +60,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 			Target.IsConnected = true;
 			foreach(var sheetVM in model.PropertySheetViewModels) { PropertySheetViewModels.Add(new PropertySheetViewModel(sheetVM));  }
 			Link = new TNodeLink(model.Link);
-			Link.ConnectedNode = Source.ParentNode;
+			Link.ConnectedNode = Source.ParentNodeViewModel.DataNode;
 			
 		}
 
