@@ -25,7 +25,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 		public PendingConnectionViewModel PendingConnection { get; set; }
 		private NodeViewModel? selectedNodeViewModel;
 		private NodifyObservableCollection<NodeViewModel> selectedNodes = new NodifyObservableCollection<NodeViewModel>();
-		private NodifyObservableCollection<NodeViewModel> nodes = new NodifyObservableCollection<NodeViewModel>();
+		private NodifyObservableCollection<NodeViewModel> displayNodeViewModels = new NodifyObservableCollection<NodeViewModel>();
 		private NodifyObservableCollection<LinkViewModel> connections = new NodifyObservableCollection<LinkViewModel>();
 		
 
@@ -37,9 +37,9 @@ namespace BehaviorEditor.MVVM.ViewModel
 				ShowPropertyExplorer = selectedNodeViewModel != null;
 			}  
 		}
-
+		private List<NodeViewModel> nodeViewModels { get; set; } = new List<NodeViewModel>();
 		public NodifyObservableCollection<NodeViewModel> SelectedNodes { get => selectedNodes; set => SetProperty(ref selectedNodes, value); }
-		public NodifyObservableCollection<NodeViewModel> NodeViewModels { get => nodes; set => SetProperty(ref nodes, value); }
+		public NodifyObservableCollection<NodeViewModel> DisplayNodeViewModels { get => displayNodeViewModels; set => SetProperty(ref displayNodeViewModels, value); }
 		public NodifyObservableCollection<LinkViewModel> ConnectionViewModels { get => connections; set => SetProperty(ref connections, value); }
 
 		public bool ShowPropertyExplorer { get => showPropertyExplorer; set => SetProperty(ref showPropertyExplorer, value); }
@@ -105,9 +105,9 @@ namespace BehaviorEditor.MVVM.ViewModel
 
 		public void SetupConnections()
 		{
-			foreach(var nodeVM in NodeViewModels)
+			foreach(var nodeVM in nodeViewModels)
 			{
-				var nodeConnections = nodeVM.GetLinkViewModels(NodeViewModels);
+				var nodeConnections = nodeVM.GetLinkViewModels(nodeViewModels);
 				foreach(var connection in nodeConnections)
 				{
 					ConnectionViewModels.Add(connection);
@@ -118,7 +118,8 @@ namespace BehaviorEditor.MVVM.ViewModel
 
 		private void LoadFile()
 		{
-			NodeViewModels.Clear();
+			nodeViewModels.Clear();
+			DisplayNodeViewModels.Clear();
 			ConnectionViewModels.Clear();
 			SelectedNodes.Clear();
 			root = dataProvider.LoadFile();
@@ -128,12 +129,13 @@ namespace BehaviorEditor.MVVM.ViewModel
 				TNode node = root.Nodes[i];
 				node.Name += i+1;
 				var nodeVM = new NodeViewModel(node);
-				NodeViewModels.Add(nodeVM);
-				//var nestedNodeVMs = nodeVM.GraphViewModelData?.NodeViewModels; //nested node connections are non functional for now
-				//if (nestedNodeVMs != null) { foreach (var nestedNodeVM in nestedNodeVMs) { NodeViewModels.Add(nestedNodeVM); } }
+				DisplayNodeViewModels.Add(nodeVM);
+				nodeViewModels.Add(nodeVM);
+				var nestedNodeVMs = nodeVM.GraphViewModelData?.NodeViewModels; //nested node connections are non functional for now
+				if (nestedNodeVMs != null) { foreach (var nestedNodeVM in nestedNodeVMs) { DisplayNodeViewModels.Add(nestedNodeVM); } }
 			}
 			coordinator.ResolveAll();
-			foreach (var nodeVM in NodeViewModels)
+			foreach (var nodeVM in DisplayNodeViewModels)
 			{
 				nodeVM.GraphViewModelData?.Coordinator.ResolveAll();
 			}
@@ -144,7 +146,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 		{
 			if (root == null) return;
 			coordinator.TranslateAll();
-			foreach( var nodeVM in NodeViewModels)
+			foreach( var nodeVM in DisplayNodeViewModels)
 			{
 				nodeVM.GraphViewModelData?.Coordinator.TranslateAll();
 			}

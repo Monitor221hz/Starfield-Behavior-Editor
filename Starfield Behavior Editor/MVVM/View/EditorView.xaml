@@ -33,7 +33,7 @@
         
         <controls:ApplicationFlowBar Grid.Row="0" Grid.ColumnSpan="2"></controls:ApplicationFlowBar>
         <controls:NodeExplorer NodeSource="{Binding SelectedNodeViewModel}" x:Name="Explorer"  Grid.Column="1" Grid.Row="1"></controls:NodeExplorer>
-        <nodify:NodifyEditor ItemsSource ="{Binding NodeViewModels}" 
+        <nodify:NodifyEditor ItemsSource ="{Binding DisplayNodeViewModels}" 
                              Connections="{Binding ConnectionViewModels}" 
                              PendingConnection="{Binding PendingConnection}" 
                              DisconnectConnectorCommand="{Binding DisconnectConnectorCommand}" 

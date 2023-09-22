@@ -86,24 +86,24 @@ namespace BehaviorEditor.MVVM.ViewModel
 		}
 
 		public List<NodeViewModel> GetNestedNodeViewModels() => GraphViewModelData?.NodeViewModels.ToList();
-		public List<LinkViewModel> GetLinkViewModels(Collection<NodeViewModel> nodes)
+		public List<LinkViewModel> GetLinkViewModels(List<NodeViewModel> nodes)
 		{
 			List<LinkViewModel> linkVMs = new List<LinkViewModel>();
 
 
 			foreach (var inputVM in InputViewModels)
 			{
-				inputVM.GetViewModels(this, nodes.ToList(), linkVMs);
+				inputVM.GetViewModels(this, nodes, linkVMs);
 			}
 
-			//if (GraphViewModelData != null)
-			//{
-			//	nodes = GraphViewModelData.NodeViewModels;
-			//	foreach (var nodeVM in nodes)
-			//	{
-			//		linkVMs.AddRange(nodeVM.GetLinkViewModels(GraphViewModelData.NodeViewModels));
-			//	}
-			//}
+			if (GraphViewModelData != null)
+			{
+				nodes = GraphViewModelData.NodeViewModels.ToList();
+				foreach (var nodeVM in nodes)
+				{
+					linkVMs.AddRange(nodeVM.GetLinkViewModels(nodes));
+				}
+			}
 			return linkVMs;
 		}
 
