@@ -154,6 +154,19 @@ namespace BehaviorEditor.MVVM.ViewModel
 			ClipboardViewModel.Copy(SelectedNodeViewModel);
 		}
 
+
+		private void DisplayNestedNodes(NodeViewModel nodeVM)
+		{
+			var nestedNodeVMs = nodeVM.GraphViewModelData?.NodeViewModels;
+			if (nestedNodeVMs != null) 
+			{
+				foreach (var nestedNodeVM in nestedNodeVMs) 
+				{ 
+					DisplayNodeViewModels.Add(nestedNodeVM); 
+					DisplayNestedNodes(nestedNodeVM);
+				} 
+			}
+		}
 		private void LoadFile()
 		{
 			nodeViewModels.Clear();
@@ -168,8 +181,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 				var nodeVM = new NodeViewModel(node);
 				DisplayNodeViewModels.Add(nodeVM);
 				nodeViewModels.Add(nodeVM);
-				var nestedNodeVMs = nodeVM.GraphViewModelData?.NodeViewModels; 
-				if (nestedNodeVMs != null) { foreach (var nestedNodeVM in nestedNodeVMs) { DisplayNodeViewModels.Add(nestedNodeVM); } }
+				DisplayNestedNodes(nodeVM);
 			}
 			coordinator.ResolveAll();
 			foreach (var nodeVM in DisplayNodeViewModels)
