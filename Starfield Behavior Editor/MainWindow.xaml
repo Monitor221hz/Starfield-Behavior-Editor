@@ -8,7 +8,7 @@
         
 
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" WindowState="Maximized">
+        Title="Starfield Behavior Editor" Height="450" Width="800" WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
