@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.Xml;
 using System.Runtime.CompilerServices;
+using System.Xml.Linq;
 
 namespace BehaviorEditor.MVVM.Model.Starfield
 {
@@ -45,7 +46,8 @@ new XmlSerializer(typeof(RootContainer));
 			saveFileDialog1.Title = "Save The Behavior File";
 			saveFileDialog1.ShowDialog();
 			if (string.IsNullOrWhiteSpace(saveFileDialog1.FileName)) return;
-			XmlWriterSettings settings = new XmlWriterSettings() { Indent = true, IndentChars = "\t", NewLineChars = "\r\n", NewLineHandling = NewLineHandling.Replace, Encoding = Encoding.UTF8 };
+			XmlWriterSettings settings = new XmlWriterSettings() { Indent = true, IndentChars = "\t", 
+				NewLineChars = "\r\n", NewLineHandling = NewLineHandling.Replace, Encoding = Encoding.UTF8, OmitXmlDeclaration=true };
 
 			using (XmlWriter writer = XmlWriter.Create(saveFileDialog1.FileName, settings))
 			{
