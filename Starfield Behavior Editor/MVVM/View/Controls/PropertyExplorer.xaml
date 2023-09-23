@@ -124,7 +124,10 @@
                                                     BorderThickness="2"
                                                     >
                                                         <TextBox.ToolTip>
-                                                            <TextBlock Style="{StaticResource ControlTextBlockStyle}" FontSize="10" Text="{Binding TypeName}"></TextBlock>
+                                                            <ToolTip Background="{StaticResource ControlColor}">
+                                                                <TextBlock Style="{StaticResource ControlTextBlockStyle}" FontSize="10" Text="{Binding TypeName}"></TextBlock>
+                                                            </ToolTip>
+                                                            
                                                         </TextBox.ToolTip>
                                                         <TextBox.ContextMenu>
                                                             <ContextMenu>
