@@ -6,7 +6,47 @@
              xmlns:local="clr-namespace:BehaviorEditor.MVVM.View.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <RelativeSource x:Key="RelativeSourceToParentGraphExplorer" Mode="FindAncestor" AncestorType="{x:Type local:GraphExplorer}" />
+    </UserControl.Resources>
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBox Text="Children" 
+                               HorizontalAlignment="Stretch"
+                               Padding="10 5 5 5"
+                               FontSize="13"
+                               Style="{StaticResource HighlightTextBoxStyle}"
+                               BorderThickness="3"
+                               TextAlignment="Center"
+                               IsReadOnly="True">
+        </TextBox>
+        <ListView VerticalContentAlignment="Bottom" 
+                  HorizontalContentAlignment="Stretch" 
+                  Grid.Row="1" Grid.Column="0" 
+                  ItemsSource="{Binding RelativeSource={StaticResource RelativeSourceToParentGraphExplorer},Path=GraphSource.NodeViewModels}" 
+                  Background="{StaticResource ControlColor}"
+                  Foreground="{StaticResource HeaderTextGradient}" BorderThickness="0"
+                  Margin="20 0 20 0">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBox Text="{Binding Name, Mode=TwoWay}" 
+                               HorizontalAlignment="Stretch"
+                               Padding="10 5 5 5"
+                               FontSize="13"
+                               Style="{StaticResource ControlTextBoxStyle}"
+                               BorderThickness="2"
+                               TextAlignment="Center">
+                        </TextBox>
+                    </StackPanel>
+
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <local:PropertyExplorer Grid.Row="2" ItemsSource="{Binding RelativeSource={StaticResource RelativeSourceToParentGraphExplorer},Path=GraphSource.PropertySheetViewModels}"></local:PropertyExplorer>
     </Grid>
 </UserControl>

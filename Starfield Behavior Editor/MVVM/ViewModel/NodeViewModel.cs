@@ -11,6 +11,8 @@ using BehaviorEditor.MVVM.Model.Starfield;
 using BehaviorEditor.MVVM.Model.Starfield.Properties;
 using Nodify;
 using BehaviorEditor.MVVM.Model.Starfield.Connectors;
+using static Nodify.EditorGestures;
+using System.Xml.Linq;
 
 
 namespace BehaviorEditor.MVVM.ViewModel
@@ -26,6 +28,8 @@ namespace BehaviorEditor.MVVM.ViewModel
 		private NodifyObservableCollection<ConnectorViewModel> outputs = new NodifyObservableCollection<ConnectorViewModel>();
 		private NodifyObservableCollection<PropertySheetViewModel> propertySheetViewModels = new NodifyObservableCollection<PropertySheetViewModel>();
 		private string name = "DefaultNode";
+		private string nodeType = "NONE";
+		private GraphViewModel? graphViewModelData;
 
 		public Point Location
 		{
@@ -47,18 +51,51 @@ namespace BehaviorEditor.MVVM.ViewModel
 				DataNode.Name = name;
 			} 
 		}
+		public string NodeType
+		{
+			get => nodeType;
+			set
+			{
+				SetProperty(ref nodeType, value);
+				DataNode.NodeType = value;
+			}
+		}
 
+		public bool ShowPropertyExplorer => true;
+		public DelegateCommand AddInputCommand { get; }
+		public DelegateCommand RemoveInputCommand { get; }	
+		public DelegateCommand AddOutputCommand { get; }
+
+		public DelegateCommand CopyThisCommand { get; } 
+
+		public DelegateCommand RemoveOutputCommand { get; }
 		public NodifyObservableCollection<ConnectorViewModel> InputViewModels { get => inputs; set => SetProperty(ref inputs, value); }
 		public NodifyObservableCollection<ConnectorViewModel> OutputViewModels { get => outputs; set => SetProperty(ref outputs, value); }
 
-		public GraphViewModel? GraphViewModelData { get; set; }
+		public GraphViewModel GraphViewModelData { get => graphViewModelData; set => SetProperty(ref graphViewModelData, value); }
+
+
 		public NodifyObservableCollection<PropertySheetViewModel> PropertySheetViewModels { get => propertySheetViewModels; set => SetProperty(ref propertySheetViewModels, value); }
+		
+		public void AppendPropertySheet(PropertySheetViewModel propertySheetViewModel)
+		{
+			PropertySheetViewModels.Add(propertySheetViewModel);
+			DataNode.PropertySheets.Add(propertySheetViewModel.PropertySheetData);
+		}
+		
+		
 		public NodeViewModel(TNode node)
 		{
+			AddInputCommand = new DelegateCommand(AddNewInput);
+			RemoveInputCommand = new DelegateCommand(RemoveLastInput);
+			AddOutputCommand = new DelegateCommand(AddNewOutput);
+			RemoveOutputCommand = new DelegateCommand(RemoveLastOutput);
+			CopyThisCommand = new DelegateCommand(CopyThis);
 			DataNode = node;
 			Name = node.Name;
+			NodeType = node.NodeType;
 			Location = new Point(node.ExpandedPositionX*SPREAD_MULTIPLIER, node.ExpandedPositionY*SPREAD_MULTIPLIER);
-			if (node.Graph != null) { GraphViewModelData = new GraphViewModel(node.Graph); }
+			if (node.Graph != null) { GraphViewModelData = new GraphViewModel(node.Graph, Name); }
 			foreach (TNodeInput input in node.Inputs)
 			{
 				InputViewModels.Add(new ConnectorViewModel(this, input));
@@ -75,14 +112,30 @@ namespace BehaviorEditor.MVVM.ViewModel
 		}
 		public NodeViewModel(NodeViewModel model)
 		{
-			DataNode = model.DataNode;
+			AddInputCommand = new DelegateCommand(AddNewInput);
+			RemoveInputCommand = new DelegateCommand(RemoveLastInput);
+			AddOutputCommand = new DelegateCommand(AddNewOutput);
+			RemoveOutputCommand = new DelegateCommand(RemoveLastOutput);
+			CopyThisCommand = new DelegateCommand(CopyThis);
+			DataNode = new TNode(model.DataNode);
 			Name = model.Name;
-			Location = new Point(model.Location.X + 5.0, model.Location.Y + 5.0);
-			if (model.GraphViewModelData != null) { GraphViewModelData = new GraphViewModel(model.GraphViewModelData); }
+			NodeType = model.NodeType;
+			Location = new Point(model.Location.X + 10.0*SPREAD_MULTIPLIER, model.Location.Y + 10.0*SPREAD_MULTIPLIER);
+			
+			if (DataNode.Graph != null) { GraphViewModelData = new GraphViewModel(DataNode.Graph, Name); }
+			foreach (TNodeInput input in DataNode.Inputs)
+			{
+				InputViewModels.Add(new ConnectorViewModel(this, input));
+			}
+			foreach (TNodeOutput output in DataNode.Outputs)
+			{
+				OutputViewModels.Add(new ConnectorViewModel(this, output));
+			}
+			foreach (PropertySheet sheet in DataNode.PropertySheets)
+			{
+				PropertySheetViewModels.Add(new PropertySheetViewModel(sheet));
+			}
 
-			foreach(var inputVM in model.InputViewModels) { InputViewModels.Add(new ConnectorViewModel(inputVM)); }
-			foreach(var outputVM in model.OutputViewModels) { OutputViewModels.Add(new ConnectorViewModel(outputVM));  }
-			foreach(var sheetVM in model.PropertySheetViewModels) { PropertySheetViewModels.Add(new PropertySheetViewModel(sheetVM)); }
 		}
 
 		public List<NodeViewModel> GetNestedNodeViewModels() => GraphViewModelData?.NodeViewModels.ToList();
@@ -106,6 +159,51 @@ namespace BehaviorEditor.MVVM.ViewModel
 			}
 			return linkVMs;
 		}
-
+		public void CopyThis()
+		{
+			ClipboardViewModel.Copy(this);
+		}
+		public void AddNewOutput()
+		{
+			var output = new TNodeOutput() { ID = OutputViewModels.Count + InputViewModels.Count + 1, IDX = OutputViewModels.Count };
+			OutputViewModels.Add(new ConnectorViewModel(this, output));
+			DataNode.Outputs.Add(output);
+		}
+		public void AddNewInput()
+		{
+			var input = new TNodeInput() { ID = OutputViewModels.Count + InputViewModels.Count + 1, IDX = InputViewModels.Count };
+			InputViewModels.Add(new ConnectorViewModel(this, input));
+			DataNode.Inputs.Add(input);
+		}
+		public void RemoveConnector(ConnectorViewModel connectorVM)
+		{
+			if (connectorVM.LinkViewModels.Count > 0 || connectorVM.IsConnected) return;
+			if (!InputViewModels.Remove(connectorVM)) { OutputViewModels.Remove(connectorVM); }
+			switch (connectorVM.Connector)
+			{
+				case TNodeInput input:
+					DataNode.Inputs.Remove(input);
+					break;
+				case TNodeOutput output:
+					DataNode.Outputs.Remove(output);
+					break;
+				default:
+					break;
+			}
+		}
+		public void RemoveLastInput()
+		{
+			var inputVM = InputViewModels.Last();
+			if (inputVM.LinkViewModels.Count > 0 || inputVM.IsConnected) return;
+			InputViewModels.Remove(inputVM);
+			DataNode.Inputs.Remove((TNodeInput)inputVM.Connector);
+		}
+		public void RemoveLastOutput()
+		{
+			var outputVM = OutputViewModels.Last();
+			if (outputVM.LinkViewModels.Count > 0 || outputVM.IsConnected) return;
+			OutputViewModels.Remove(outputVM);
+			DataNode.Outputs.Remove((TNodeOutput)outputVM.Connector);
+		}
 	}
 }

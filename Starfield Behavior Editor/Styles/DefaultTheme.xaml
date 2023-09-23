@@ -39,6 +39,12 @@
         <Setter Property="Foreground" Value="{StaticResource HighlightGradient}" />
         <Setter Property="FontFamily" Value="Bahnschrift"/>
     </Style>
+    <Style TargetType="TextBox" x:Key="HighlightTextBoxStyle">
+        <Setter Property="Background" Value="{StaticResource ControlColor}" />
+        <Setter Property="BorderBrush" Value="{StaticResource HighlightGradient}"/>
+        <Setter Property="Foreground" Value="{StaticResource HighlightGradient}" />
+        <Setter Property="FontFamily" Value="Bahnschrift"/>
+    </Style>
     <Style TargetType="TextBlock" x:Key="ControlTextBlockStyle">
         <Setter Property="Background" Value="{StaticResource ControlColor}" />
         <Setter Property="Foreground" Value="{StaticResource ParagraphTextGradient}" />
@@ -47,6 +53,7 @@
     <Style TargetType="TextBox" x:Key="ControlTextBoxStyle">
         <Setter Property="Background" Value="{StaticResource ControlColor}" />
         <Setter Property="Foreground" Value="{StaticResource ParagraphTextGradient}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ParagraphTextGradient}"/>
         <Setter Property="FontFamily" Value="Bahnschrift"/>
     </Style>
     <Style x:Key="ControlBorder" TargetType="{x:Type Border}">
@@ -56,6 +63,31 @@
         <Setter Property="BorderBrush" Value="{StaticResource HighlightGradient}" />
     </Style>
 
+    <Style x:Key="ControlMenuItemStyle" TargetType="MenuItem">
+        <Setter Property="Background" Value="{StaticResource ControlColor}" />
+        <Setter Property="Foreground" Value="{StaticResource ParagraphTextGradient}" />
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontFamily" Value="Bahnschrift"/>
+    </Style>
+    <Style x:Key="HighlightMenuItemStyle" TargetType="MenuItem">
+        <Setter Property="Background" Value="{StaticResource ControlColor}" />
+        <Setter Property="Foreground" Value="{StaticResource HighlightGradient}" />
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontFamily" Value="Bahnschrift"/>
+    </Style>
+    <Style x:Key="ControlContextMenuStyle" TargetType="ContextMenu">
+        <Setter Property="Background" Value="{StaticResource ControlColor}" />
+        <Setter Property="Foreground" Value="{StaticResource ParagraphTextGradient}" />
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontFamily" Value="Bahnschrift"/>
+    </Style>
+    <Style x:Key="HighlightContextMenuStyle" TargetType="ContextMenu">
+        <Setter Property="Background" Value="{StaticResource ControlColor}" />
+        <Setter Property="Foreground" Value="{StaticResource HighlightGradient}" />
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontFamily" Value="Bahnschrift"/>
+    </Style>
+    
     <Style x:Key="ControlButtonStyle" TargetType="Button">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Margin" Value="5"/>

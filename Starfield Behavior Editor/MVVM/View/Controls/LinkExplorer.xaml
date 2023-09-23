@@ -21,32 +21,49 @@
                         <Grid.RowDefinitions>
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
-                        <ListView Grid.Column="0" ItemsSource="{Binding LinkViewModels}" Grid.Row="0"
-                                  Background="{StaticResource ControlColor}"
-                                  Foreground="{StaticResource HighlightGradient}"
-                                  BorderBrush="{StaticResource HighlightGradient}"
-                                  BorderThickness="3"
-                                  HorizontalContentAlignment="Stretch">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="Link" 
-                                               Width="140" 
-                                               HorizontalAlignment="Stretch"
-                                               Padding="10 5 5 5"
-                                               FontSize="13"
-                                               Style="{StaticResource HighlightTextBlockStyle}"></TextBlock>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                        <TextBox Text="{Binding Name, Mode=TwoWay}" 
+                               HorizontalAlignment="Stretch"
+                               Padding="10 5 5 5"
+                               FontSize="13"
+                               Style="{StaticResource HighlightTextBoxStyle}"
+                               BorderThickness="3"
+                               TextAlignment="Center"
+                               Grid.Row="0">
+                        </TextBox>
                         <ListView Grid.Column="0" ItemsSource="{Binding LinkViewModels}" Grid.Row="1"
                                   Background="{StaticResource ControlColor}"
                                   Foreground="{StaticResource HighlightGradient}"
                                   BorderBrush="{StaticResource HighlightGradient}"
                                   BorderThickness="3"
                                   HorizontalContentAlignment="Stretch">
+
                             <ListView.ItemTemplate>
-                                
+                                <DataTemplate>
+                                    <TextBlock Text="Link" 
+                                               TextAlignment="Center"
+                                               Width="140" 
+                                               HorizontalAlignment="Stretch"
+                                               Padding="10 5 5 5"
+                                               FontSize="13"
+                                               Style="{StaticResource HighlightTextBlockStyle}">
+                                        <TextBlock.ContextMenu>
+                                            <ContextMenu Style="{StaticResource HighlightContextMenuStyle}">
+                                                <MenuItem Header="Paste" Command="{Binding PastePropertiesCommand}" Style="{StaticResource HighlightMenuItemStyle}"/>
+                                            </ContextMenu>
+                                        </TextBlock.ContextMenu>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <ListView Grid.Column="0" ItemsSource="{Binding LinkViewModels}" Grid.Row="2"
+                                  Background="{StaticResource ControlColor}"
+                                  Foreground="{StaticResource HighlightGradient}"
+                                  BorderBrush="{StaticResource HighlightGradient}"
+                                  BorderThickness="3"
+                                  HorizontalContentAlignment="Stretch">
+                            <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <local:PropertyExplorer ItemsSource="{Binding PropertySheetViewModels}"></local:PropertyExplorer>
                                 </DataTemplate>

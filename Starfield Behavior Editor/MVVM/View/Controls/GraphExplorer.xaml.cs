@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BehaviorEditor.MVVM.ViewModel;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,15 +22,15 @@ namespace BehaviorEditor.MVVM.View.Controls
 	/// </summary>
 	public partial class GraphExplorer : UserControl
 	{
-		public IEnumerable ItemsSource
+		public GraphViewModel GraphSource
 		{
-			get => (IEnumerable)GetValue(ItemsSourceProperty);
-			set => SetValue(ItemsSourceProperty, value);
+			get => (GraphViewModel)GetValue(GraphSourceProperty);
+			set => SetValue(GraphSourceProperty, value);
 		}
 
-		public static readonly DependencyProperty ItemsSourceProperty =
+		public static readonly DependencyProperty GraphSourceProperty =
 			DependencyProperty.Register(
-				nameof(ItemsSource), typeof(IEnumerable), typeof(GraphExplorer));
+				nameof(GraphSource), typeof(GraphViewModel), typeof(GraphExplorer));
 		public GraphExplorer()
 		{
 			InitializeComponent();

@@ -29,10 +29,15 @@ namespace BehaviorEditor.MVVM.ViewModel
 		public DelegateCommand<RowViewModel> RemoveRowCommand { get; set; }
 
 		public DelegateCommand AddRowCommand { get; set; }
+
+		public DelegateCommand CopyCommand { get; set; }
+		public DelegateCommand PasteRowsCommand { get; set; }
 		public PropertySheet PropertySheetData { get => propertySheet; set => SetProperty(ref propertySheet, value); }
 
 		public PropertySheetViewModel(PropertySheet propertySheet)
         {
+			CopyCommand = new DelegateCommand(Copy);
+			PasteRowsCommand = new DelegateCommand(PasteRows);
 			RemoveRowCommand = new DelegateCommand<RowViewModel>(RemoveRow);	
 			AddRowCommand = new DelegateCommand(AddRow);
             this.propertySheet = propertySheet;
@@ -50,6 +55,8 @@ namespace BehaviorEditor.MVVM.ViewModel
 
 		public PropertySheetViewModel(PropertySheetViewModel model)
 		{
+			CopyCommand = new DelegateCommand(Copy);
+			PasteRowsCommand = new DelegateCommand(PasteRows);
 			RemoveRowCommand = new DelegateCommand<RowViewModel>(RemoveRow);
 			AddRowCommand = new DelegateCommand(AddRow);
 			foreach (var rowVM in model.RowViewModels) { RowViewModels.Add(new RowViewModel(rowVM)); }
@@ -57,13 +64,26 @@ namespace BehaviorEditor.MVVM.ViewModel
 			PropertySheetData = model.PropertySheetData;
 			
 		}
+		public void Copy()
+		{
+			ClipboardViewModel.Copy(this);
+		}
+
+		public void PasteRows()
+		{
+			ClipboardViewModel.Paste(this);
+		}
 		public void RemoveRow(RowViewModel rowVM)
 		{
 			int removeIndex = RowViewModels.IndexOf(rowVM);
 			RowViewModels.RemoveAt(removeIndex);
 			propertySheet.Rows.RemoveAt(removeIndex);
 		}
-
+		public void AppendRow(RowViewModel rowVM)
+		{
+			RowViewModels.Add(rowVM);
+			propertySheet.Rows.Add(rowVM.DataRow);
+		}
 		public void AddRow()
 		{
 			var row = new Row();

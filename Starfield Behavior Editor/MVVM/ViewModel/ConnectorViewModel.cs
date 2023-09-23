@@ -27,6 +27,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 
 		private bool isConnected;
 		private NodifyObservableCollection<LinkViewModel> linkViewModels = new NodifyObservableCollection<LinkViewModel>();
+		private string name;
 
 		public bool IsConnected
 		{
@@ -41,13 +42,21 @@ namespace BehaviorEditor.MVVM.ViewModel
 
 		public NodeViewModel ParentNodeViewModel { get; private set; }
 
-		public string Name { get; set; }
+		public string Name { 
+			get => name;
+			set 
+			{
+				SetProperty(ref name, value);
+				Connector.Name = name;
+			}
+		}
 
 		public NodifyObservableCollection<LinkViewModel> LinkViewModels { get => linkViewModels; set => SetProperty(ref linkViewModels, value); }
 
-
+		public DelegateCommand RemoveThisCommand { get; }
 		public ConnectorViewModel(NodeViewModel nodeVM, TNodeConnector connector)
 		{
+			RemoveThisCommand = new DelegateCommand(RemoveThis);
 			ParentNodeViewModel = nodeVM;
 			Connector = connector;
 			Name = connector.Name;
@@ -55,9 +64,28 @@ namespace BehaviorEditor.MVVM.ViewModel
 
 		public ConnectorViewModel(ConnectorViewModel connectorViewModel)
 		{
+			RemoveThisCommand = new DelegateCommand(RemoveThis);
 			ParentNodeViewModel = connectorViewModel.ParentNodeViewModel;
-			Connector = connectorViewModel.Connector;
+			
+			switch (connectorViewModel.Connector)
+			{
+				case TNodeInput input:
+					Connector = new TNodeInput(input);
+					break;
+				case TNodeOutput output:
+					Connector = new TNodeOutput(output);
+					break;
+				default:
+					Connector = connectorViewModel.Connector;
+					break;
+			}
+
+
 			Name = connectorViewModel.Name;
+		}
+		public void RemoveThis()
+		{
+			ParentNodeViewModel?.RemoveConnector(this);
 		}
 		public void GetViewModels(NodeViewModel nodeVM, List<NodeViewModel> nodes, List<LinkViewModel> linkVMs)
 		{

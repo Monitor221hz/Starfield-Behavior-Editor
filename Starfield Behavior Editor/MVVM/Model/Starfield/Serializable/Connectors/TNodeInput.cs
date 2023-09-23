@@ -32,8 +32,8 @@ namespace BehaviorEditor.MVVM.Model.Starfield.Connectors
 			ID = input.ID;
 			IDX = input.IDX;
 			
-			foreach (TNodeLink link in input.Links) { Links.Add(new TNodeLink(link)); };
-
-		}
+			//foreach (TNodeLink link in input.Links) { Links.Add(new TNodeLink(link)); };
+			//new nodes shouldn't have existing links
+		}	
 	}
 }

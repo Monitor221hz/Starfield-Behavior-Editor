@@ -22,7 +22,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 		public NodifyObservableCollection<PropertySheetViewModel> PropertySheetViewModels { get => propertySheetViewModels; set => SetProperty(ref propertySheetViewModels, value); }
 		public NodifyObservableCollection<NodeViewModel> NodeViewModels { get => nodeViewModels; set => SetProperty(ref nodeViewModels, value); }
 
-		internal GraphViewModel(Graph graph)
+		internal GraphViewModel(Graph graph, string parentName)
 		{
 			DataGraph = graph;
 			Coordinator = new TNodeCoordinator(graph);
@@ -33,13 +33,11 @@ namespace BehaviorEditor.MVVM.ViewModel
 			for (int i = 0; i < DataGraph.Nodes.Count; i++)
 			{
 				TNode node = DataGraph.Nodes[i];
-				node.Name += "Nested";
-				node.Name += i+1;
 				NodeViewModels.Add(new NodeViewModel(node));
 			}
 		}
 
-		public GraphViewModel(GraphViewModel model)
+		public GraphViewModel(GraphViewModel model, string parentName)
 		{
 			DataGraph = new Graph(model.DataGraph);
 			Coordinator = new TNodeCoordinator(DataGraph);
@@ -50,8 +48,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 			for (int i = 0; i < DataGraph.Nodes.Count; i++)
 			{
 				TNode node = DataGraph.Nodes[i];
-				node.Name += "nested";
-				node.Name += i+1;
+				node.Name = $"{parentName}_Child{i + 1}_{node.Name}";
 				NodeViewModels.Add(new NodeViewModel(node));
 			}
 		}

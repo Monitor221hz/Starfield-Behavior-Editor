@@ -17,7 +17,7 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using System.Xml;
 using System.Xml.Serialization;
-
+using System.Windows;
 namespace BehaviorEditor.MVVM.ViewModel
 {
     public class EditorViewModel : ObservableObject
@@ -41,12 +41,25 @@ namespace BehaviorEditor.MVVM.ViewModel
 		public NodifyObservableCollection<NodeViewModel> SelectedNodes { get => selectedNodes; set => SetProperty(ref selectedNodes, value); }
 		public NodifyObservableCollection<NodeViewModel> DisplayNodeViewModels { get => displayNodeViewModels; set => SetProperty(ref displayNodeViewModels, value); }
 		public NodifyObservableCollection<LinkViewModel> ConnectionViewModels { get => connections; set => SetProperty(ref connections, value); }
+		
+		private Point viewPortLocation;
+		public Point ViewPortLocation
+		{
+			set
+			{
+				SetProperty(ref viewPortLocation, value);
+			}
+			get => viewPortLocation;
+		}
 
 		public bool ShowPropertyExplorer { get => showPropertyExplorer; set => SetProperty(ref showPropertyExplorer, value); }
 		public ICommand DisconnectConnectorCommand { get; }
 
 		public DelegateCommand LoadCommand { get; }
 		public DelegateCommand SaveCommand { get; }
+
+		public DelegateCommand CopyNodeCommand { get; }	
+		public DelegateCommand PasteNodeCommand { get; }
 
 		private TNodeCoordinator coordinator { get; set; } = new TNodeCoordinator(new RootContainer());
 
@@ -57,6 +70,8 @@ namespace BehaviorEditor.MVVM.ViewModel
 
 		public EditorViewModel()
 		{
+			CopyNodeCommand = new DelegateCommand(CopyNode);
+			PasteNodeCommand = new DelegateCommand(PasteNode);
 			DisconnectConnectorCommand = new DelegateCommand<ConnectorViewModel>(Detach);
 
 			PendingConnection = new PendingConnectionViewModel(this);
@@ -114,7 +129,30 @@ namespace BehaviorEditor.MVVM.ViewModel
 				}
 			}
 		}
+		public void AppendNodeViewModel(NodeViewModel nodeVM, bool PanToNode)
+		{
+			
+			DisplayNodeViewModels.Add(nodeVM);
+			if (SelectedNodeViewModel?.GraphViewModelData != null)
+			{
+				SelectedNodeViewModel.GraphViewModelData.NodeViewModels.Add(nodeVM);
+				SelectedNodeViewModel.GraphViewModelData.DataGraph.Nodes.Add(nodeVM.DataNode);
+				return;
+			}
+			nodeViewModels.Add(nodeVM);
+			root!.Nodes.Add(nodeVM.DataNode);
+		}
 
+
+		public void PasteNode()
+		{
+			ClipboardViewModel.Paste(this);
+		}
+		public void CopyNode()
+		{
+			if (SelectedNodeViewModel == null) return;
+			ClipboardViewModel.Copy(SelectedNodeViewModel);
+		}
 
 		private void LoadFile()
 		{
@@ -127,11 +165,10 @@ namespace BehaviorEditor.MVVM.ViewModel
 			for (int i = 0; i < root.Nodes.Count; i++)
 			{
 				TNode node = root.Nodes[i];
-				node.Name += i+1;
 				var nodeVM = new NodeViewModel(node);
 				DisplayNodeViewModels.Add(nodeVM);
 				nodeViewModels.Add(nodeVM);
-				var nestedNodeVMs = nodeVM.GraphViewModelData?.NodeViewModels; //nested node connections are non functional for now
+				var nestedNodeVMs = nodeVM.GraphViewModelData?.NodeViewModels; 
 				if (nestedNodeVMs != null) { foreach (var nestedNodeVM in nestedNodeVMs) { DisplayNodeViewModels.Add(nestedNodeVM); } }
 			}
 			coordinator.ResolveAll();

@@ -39,7 +39,14 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition></ColumnDefinition>
                                 <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
+                            <Grid.ContextMenu>
+                                <ContextMenu Style="{StaticResource HighlightContextMenuStyle}">
+                                    <MenuItem Header="Copy" Command="{Binding CopyCommand}" Style="{StaticResource HighlightMenuItemStyle}"/>
+                                    <MenuItem Header="Paste" Command="{Binding PasteRowsCommand}" Style="{StaticResource HighlightMenuItemStyle}"/>
+                                </ContextMenu>
+                            </Grid.ContextMenu>
                             <ListView Grid.Column="0" ItemsSource="{Binding ColumnViewModels}" Grid.Row="0"
                                   Background="{StaticResource ControlColor}"
                                   Foreground="{StaticResource HighlightGradient}"
@@ -65,7 +72,14 @@
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
-                            <Button Grid.Column="1" Command="{Binding AddRowCommand}"
+                            <Button Grid.Column="1" Command="{Binding CopyCommand}"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Style="{StaticResource HeaderButtonStyle}"
+                                    Margin="5 0 11 0">
+                                <Image Source="..\..\..\Assets\GUI\copy.png" RenderOptions.BitmapScalingMode="Fant" Width="30"></Image>
+                            </Button>
+                            <Button Grid.Column="2" Command="{Binding AddRowCommand}"
                                     Background="Transparent" 
                                     BorderThickness="0"
                                     Style="{StaticResource HeaderButtonStyle}"
@@ -109,6 +123,19 @@
                                                     Padding="5 5 5 5"
                                                     BorderThickness="2"
                                                     >
+                                                        <TextBox.ToolTip>
+                                                            <TextBlock Style="{StaticResource ControlTextBlockStyle}" FontSize="10" Text="{Binding TypeName}"></TextBlock>
+                                                        </TextBox.ToolTip>
+                                                        <TextBox.ContextMenu>
+                                                            <ContextMenu>
+                                                                <MenuItem Header="Set Implicit Type" Style="{StaticResource HighlightMenuItemStyle}">
+                                                                    <MenuItem Header="Int" Command="{Binding SetTypeCommand}" CommandParameter="0" Style="{StaticResource HighlightMenuItemStyle}"/>
+                                                                    <MenuItem Header="Float" Command="{Binding SetTypeCommand}" CommandParameter="1" Style="{StaticResource HighlightMenuItemStyle}"/>
+                                                                    <MenuItem Header="String" Command="{Binding SetTypeCommand}" CommandParameter="2" Style="{StaticResource HighlightMenuItemStyle}"/>
+                                                                    <MenuItem Header="Bool" Command="{Binding SetTypeCommand}" CommandParameter="3" Style="{StaticResource HighlightMenuItemStyle}"/>
+                                                                </MenuItem>
+                                                            </ContextMenu>
+                                                        </TextBox.ContextMenu>
                                                     </TextBox>
                                                 </DataTemplate>
                                             </ListView.ItemTemplate>

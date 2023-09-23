@@ -6,6 +6,7 @@
     <RootNamespace>BehaviorEditor</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>orbital.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,9 +21,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\GUI\copy.png" />
     <None Remove="Assets\GUI\load.png" />
     <None Remove="Assets\GUI\open-folder.png" />
     <None Remove="Assets\GUI\save.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="orbital.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\GUI\copy.png" />
     <Resource Include="Assets\GUI\load.png" />
     <Resource Include="Assets\GUI\open-folder.png" />
     <Resource Include="Assets\GUI\save.png" />
