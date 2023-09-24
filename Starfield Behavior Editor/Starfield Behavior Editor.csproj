@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\GUI\contract.png" />
     <None Remove="Assets\GUI\copy.png" />
     <None Remove="Assets\GUI\load.png" />
     <None Remove="Assets\GUI\open-folder.png" />
@@ -36,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\GUI\contract.png" />
     <Resource Include="Assets\GUI\copy.png" />
     <Resource Include="Assets\GUI\load.png" />
     <Resource Include="Assets\GUI\open-folder.png" />

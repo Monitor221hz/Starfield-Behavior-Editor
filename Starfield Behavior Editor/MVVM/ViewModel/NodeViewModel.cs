@@ -21,7 +21,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 
     public class NodeViewModel :  ObservableObject
     {
-		const float SPREAD_MULTIPLIER = 2.0f;
+		const float SPREAD_MULTIPLIER = 3.0f;
 		public TNode DataNode { get; private set; }
 		private Point location;
 		private NodifyObservableCollection<ConnectorViewModel> inputs = new NodifyObservableCollection<ConnectorViewModel>();
@@ -95,7 +95,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 			Name = node.Name;
 			NodeType = node.NodeType;
 			Location = new Point(node.ExpandedPositionX*SPREAD_MULTIPLIER, node.ExpandedPositionY*SPREAD_MULTIPLIER);
-			if (node.Graph != null) { GraphViewModelData = new GraphViewModel(node.Graph, Name); }
+			if (node.Graph != null) { GraphViewModelData = new GraphViewModel(node.Graph, this); }
 			foreach (TNodeInput input in node.Inputs)
 			{
 				InputViewModels.Add(new ConnectorViewModel(this, input));
@@ -122,7 +122,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 			NodeType = model.NodeType;
 			Location = new Point(model.Location.X + 10.0*SPREAD_MULTIPLIER, model.Location.Y + 10.0*SPREAD_MULTIPLIER);
 			
-			if (DataNode.Graph != null) { GraphViewModelData = new GraphViewModel(DataNode.Graph, Name); }
+			if (DataNode.Graph != null) { GraphViewModelData = new GraphViewModel(DataNode.Graph, this); }
 			foreach (TNodeInput input in DataNode.Inputs)
 			{
 				InputViewModels.Add(new ConnectorViewModel(this, input));

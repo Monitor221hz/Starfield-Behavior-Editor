@@ -15,15 +15,31 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBox Text="Children" 
+        <Grid >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+              <TextBox Grid.Column="0" Text="Children" 
                                HorizontalAlignment="Stretch"
-                               Padding="10 5 5 5"
+                               HorizontalContentAlignment="Stretch"
+                               Padding="10"
                                FontSize="13"
                                Style="{StaticResource HighlightTextBoxStyle}"
                                BorderThickness="3"
                                TextAlignment="Center"
                                IsReadOnly="True">
-        </TextBox>
+                </TextBox>
+            <Button Grid.Column="1" Command="{Binding RelativeSource={StaticResource RelativeSourceToParentGraphExplorer},Path=GraphSource.CallChildrenCommand}"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Style="{StaticResource HeaderButtonStyle}"
+                                    Margin="5 0 11 0"
+                                    >
+                <Image Source="..\..\..\Assets\GUI\contract.png" RenderOptions.BitmapScalingMode="Fant" Width="29"></Image>
+            </Button>
+        </Grid>
+
         <ListView VerticalContentAlignment="Bottom" 
                   HorizontalContentAlignment="Stretch" 
                   Grid.Row="1" Grid.Column="0" 

@@ -43,14 +43,54 @@
                              FontFamily="Bahnschrift"
                              ViewportLocation="{Binding ViewPortLocation, Mode=TwoWay}"
                              >
+
             <nodify:NodifyEditor.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Copy" Command="{Binding CopyNodeCommand}" Style="{StaticResource HighlightMenuItemStyle}"/>
                     <MenuItem Header="Paste" Command="{Binding PasteNodeCommand}" Style="{StaticResource HighlightMenuItemStyle}"/>
                 </ContextMenu>
             </nodify:NodifyEditor.ContextMenu>
-            
-            <nodify:NodifyEditor.ItemTemplate>
+
+
+
+            <nodify:NodifyEditor.PendingConnectionTemplate>
+                <DataTemplate DataType="{x:Type vm:LinkViewModel}">
+                    <nodify:PendingConnection StartedCommand="{Binding StartCommand}"
+                                      CompletedCommand="{Binding FinishCommand}"
+                                      AllowOnlyConnectors="True"
+                                        Style="{StaticResource PendingConnectionStyle}"/>
+                </DataTemplate>
+            </nodify:NodifyEditor.PendingConnectionTemplate>
+
+            <nodify:NodifyEditor.ConnectionTemplate>
+                <DataTemplate DataType="{x:Type vm:LinkViewModel}">
+                    <nodify:Connection Source="{Binding Source.Anchor}"
+                                   Target="{Binding Target.Anchor}" ArrowShape="Arrowhead" ArrowEnds="End" 
+                                       Style="{StaticResource ConnectionStyle}"/>
+
+                </DataTemplate>
+            </nodify:NodifyEditor.ConnectionTemplate>
+
+
+
+            <nodify:NodifyEditor.ItemContainerStyle>
+                <Style TargetType="{x:Type nodify:ItemContainer}">
+                    <Setter Property="Location" 
+                    Value="{Binding Location, Mode=TwoWay}" />
+                    <Setter Property="BorderBrush" Value="Pink"></Setter>
+                    
+                </Style>
+            </nodify:NodifyEditor.ItemContainerStyle>
+            <nodify:NodifyEditor.Resources>
+                <Style TargetType="{x:Type nodify:NodeOutput}"
+                       BasedOn="{StaticResource {x:Type nodify:NodeOutput}}">
+                    <Setter Property="BorderBrush" Value="Pink"></Setter>
+                </Style>
+                <Style TargetType="{x:Type nodify:NodeInput}"
+                       BasedOn="{StaticResource {x:Type nodify:NodeInput}}">
+                    <Setter Property="BorderBrush" Value="Pink"></Setter>
+                </Style>
+
                 <DataTemplate DataType="{x:Type vm:NodeViewModel}">
                     <nodify:Node Header="{Binding Name}"
              Input="{Binding InputViewModels}"
@@ -93,53 +133,65 @@
                                         </ContextMenu>
                                     </nodify:NodeOutput.ContextMenu>
                                 </nodify:NodeOutput>
-                                
+
                             </DataTemplate>
                         </nodify:Node.OutputConnectorTemplate>
 
+
                     </nodify:Node>
 
-                </DataTemplate>
-
-            </nodify:NodifyEditor.ItemTemplate>
-
-            <nodify:NodifyEditor.PendingConnectionTemplate>
-                <DataTemplate DataType="{x:Type vm:LinkViewModel}">
-                    <nodify:PendingConnection StartedCommand="{Binding StartCommand}"
-                                      CompletedCommand="{Binding FinishCommand}"
-                                      AllowOnlyConnectors="True"
-                                        Style="{StaticResource PendingConnectionStyle}"/>
-                </DataTemplate>
-            </nodify:NodifyEditor.PendingConnectionTemplate>
-
-            <nodify:NodifyEditor.ConnectionTemplate>
-                <DataTemplate DataType="{x:Type vm:LinkViewModel}">
-                    <nodify:Connection Source="{Binding Source.Anchor}"
-                                   Target="{Binding Target.Anchor}" ArrowShape="Arrowhead" ArrowEnds="End" 
-                                       Style="{StaticResource ConnectionStyle}"/>
 
                 </DataTemplate>
-            </nodify:NodifyEditor.ConnectionTemplate>
+                <DataTemplate DataType="{x:Type vm:EmbeddedNodeViewModel}">
+                    <StackPanel Background="Transparent">
+                        <nodify:GroupingNode MovementMode="Group"></nodify:GroupingNode>
+                        <nodify:Node Header="{Binding Name}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
+             Input="{Binding InputViewModels}"
+             Output="{Binding OutputViewModels}">
+                            <nodify:Node.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Copy" Style="{StaticResource HighlightMenuItemStyle}" Command="{Binding CopyThisCommand}"></MenuItem>
+                                    <MenuItem Header="Add Last" Style="{StaticResource HighlightMenuItemStyle}">
+                                        <MenuItem Header="Input" Command="{Binding AddInputCommand}" Style="{StaticResource HighlightMenuItemStyle}"/>
+                                        <MenuItem Header="Output" Command="{Binding AddOutputCommand}" Style="{StaticResource HighlightMenuItemStyle}"></MenuItem>
+                                    </MenuItem>
+                                    <MenuItem Header="Remove Last" Style="{StaticResource HighlightMenuItemStyle}">
+                                        <MenuItem Header="Input" Command="{Binding RemoveInputCommand}" Style="{StaticResource HighlightMenuItemStyle}"/>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </nodify:Node.ContextMenu>
 
+                            <nodify:Node.InputConnectorTemplate >
+                                <DataTemplate DataType="{x:Type vm:ConnectorViewModel}">
+                                    <nodify:NodeInput Header="{Binding Name}"
+                          IsConnected="{Binding IsConnected}"
+                          Anchor="{Binding Anchor, Mode=OneWayToSource}">
+                                        <nodify:NodeInput.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="Remove" Command="{Binding RemoveThisCommand}" Style="{StaticResource HighlightMenuItemStyle}"/>
+                                            </ContextMenu>
+                                        </nodify:NodeInput.ContextMenu>
+                                    </nodify:NodeInput>
+                                </DataTemplate>
+                            </nodify:Node.InputConnectorTemplate>
 
+                            <nodify:Node.OutputConnectorTemplate>
+                                <DataTemplate DataType="{x:Type vm:LinkViewModel}">
+                                    <nodify:NodeOutput Header="{Binding Name}"
+                           IsConnected="{Binding IsConnected}"
+                           Anchor="{Binding Anchor, Mode=OneWayToSource}">
+                                        <nodify:NodeOutput.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="Remove" Command="{Binding RemoveThisCommand}" Style="{StaticResource HighlightMenuItemStyle}"/>
+                                            </ContextMenu>
+                                        </nodify:NodeOutput.ContextMenu>
+                                    </nodify:NodeOutput>
+                                </DataTemplate>
+                            </nodify:Node.OutputConnectorTemplate>
+                        </nodify:Node>
 
-            <nodify:NodifyEditor.ItemContainerStyle>
-                <Style TargetType="{x:Type nodify:ItemContainer}">
-                    <Setter Property="Location" 
-                    Value="{Binding Location, Mode=TwoWay}" />
-                    <Setter Property="BorderBrush" Value="Pink"></Setter>
-                    
-                </Style>
-            </nodify:NodifyEditor.ItemContainerStyle>
-            <nodify:NodifyEditor.Resources>
-                <Style TargetType="{x:Type nodify:NodeOutput}"
-                       BasedOn="{StaticResource {x:Type nodify:NodeOutput}}">
-                    <Setter Property="BorderBrush" Value="Pink"></Setter>
-                </Style>
-                <Style TargetType="{x:Type nodify:NodeInput}"
-                       BasedOn="{StaticResource {x:Type nodify:NodeInput}}">
-                    <Setter Property="BorderBrush" Value="Pink"></Setter>
-                </Style>
+                    </StackPanel>
+                </DataTemplate>
             </nodify:NodifyEditor.Resources>
 
         </nodify:NodifyEditor>

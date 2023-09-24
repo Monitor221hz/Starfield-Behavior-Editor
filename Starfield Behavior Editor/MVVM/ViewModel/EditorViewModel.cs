@@ -18,6 +18,8 @@ using System.Windows.Navigation;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Windows;
+using System.Windows.Data;
+
 namespace BehaviorEditor.MVVM.ViewModel
 {
     public class EditorViewModel : ObservableObject
@@ -39,6 +41,8 @@ namespace BehaviorEditor.MVVM.ViewModel
 		}
 		private List<NodeViewModel> nodeViewModels { get; set; } = new List<NodeViewModel>();
 		public NodifyObservableCollection<NodeViewModel> SelectedNodes { get => selectedNodes; set => SetProperty(ref selectedNodes, value); }
+
+		public CompositeCollection DisplayObjects { get => displayObjects; set => SetProperty(ref displayObjects, value); }
 		public NodifyObservableCollection<NodeViewModel> DisplayNodeViewModels { get => displayNodeViewModels; set => SetProperty(ref displayNodeViewModels, value); }
 		public NodifyObservableCollection<LinkViewModel> ConnectionViewModels { get => connections; set => SetProperty(ref connections, value); }
 		
@@ -67,6 +71,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 
 		private RootContainer? root;
 		private bool showPropertyExplorer = false;
+		private CompositeCollection displayObjects;
 
 		public EditorViewModel()
 		{
@@ -178,7 +183,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 			for (int i = 0; i < root.Nodes.Count; i++)
 			{
 				TNode node = root.Nodes[i];
-				var nodeVM = new NodeViewModel(node);
+				var nodeVM = node.Graph == null ? new NodeViewModel(node) : new EmbeddedNodeViewModel(node);
 				DisplayNodeViewModels.Add(nodeVM);
 				nodeViewModels.Add(nodeVM);
 				DisplayNestedNodes(nodeVM);
