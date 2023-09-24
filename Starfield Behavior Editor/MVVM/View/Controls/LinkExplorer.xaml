@@ -43,7 +43,6 @@
                                 <DataTemplate>
                                     <TextBlock Text="Link" 
                                                TextAlignment="Center"
-                                               Width="140" 
                                                HorizontalAlignment="Stretch"
                                                Padding="10 5 5 5"
                                                FontSize="13"

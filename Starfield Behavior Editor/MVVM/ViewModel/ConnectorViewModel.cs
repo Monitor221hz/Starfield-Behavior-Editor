@@ -98,7 +98,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 			{
 
 				var targetNode = nodes[link.NodeID - 1];
-				if (targetNode == nodeVM) continue;
+				
 
 				var targetOutput = targetNode.OutputViewModels[link.Output];
 				var targetInput = nodeVM.InputViewModels[Connector.IDX];
