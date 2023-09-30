@@ -29,7 +29,9 @@ namespace BehaviorEditor.MVVM.ViewModel
 		private NodifyObservableCollection<PropertySheetViewModel> propertySheetViewModels = new NodifyObservableCollection<PropertySheetViewModel>();
 		private string name = "DefaultNode";
 		private string nodeType = "NONE";
+		private int userID = 0;
 		private GraphViewModel? graphViewModelData;
+		private NodifyObservableCollection<string> flags = new NodifyObservableCollection<string>();
 
 		public Point Location
 		{
@@ -61,6 +63,19 @@ namespace BehaviorEditor.MVVM.ViewModel
 			}
 		}
 
+		public int UserID
+		{
+			get => userID; 
+			set
+			{
+				SetProperty(ref userID, value);
+				DataNode.UserID = userID;
+			}
+		}
+
+
+
+		public bool HasChildren => GraphViewModelData != null;
 		public bool ShowPropertyExplorer => true;
 		public DelegateCommand AddInputCommand { get; }
 		public DelegateCommand RemoveInputCommand { get; }	
@@ -71,6 +86,8 @@ namespace BehaviorEditor.MVVM.ViewModel
 		public DelegateCommand RemoveOutputCommand { get; }
 		public NodifyObservableCollection<ConnectorViewModel> InputViewModels { get => inputs; set => SetProperty(ref inputs, value); }
 		public NodifyObservableCollection<ConnectorViewModel> OutputViewModels { get => outputs; set => SetProperty(ref outputs, value); }
+
+		public NodifyObservableCollection<string> Flags { get => flags; set => SetProperty(ref flags, value); }
 
 		public GraphViewModel GraphViewModelData { get => graphViewModelData; set => SetProperty(ref graphViewModelData, value); }
 
@@ -95,6 +112,8 @@ namespace BehaviorEditor.MVVM.ViewModel
 			Name = node.Name;
 			NodeType = node.NodeType;
 			Location = new Point(node.ExpandedPositionX*SPREAD_MULTIPLIER, node.ExpandedPositionY*SPREAD_MULTIPLIER);
+			UserID = node.UserID;
+
 			if (node.Graph != null) { GraphViewModelData = new GraphViewModel(node.Graph, this); }
 			foreach (TNodeInput input in node.Inputs)
 			{
@@ -108,7 +127,10 @@ namespace BehaviorEditor.MVVM.ViewModel
 			{
 				PropertySheetViewModels.Add(new PropertySheetViewModel(sheet));
 			}
-
+			foreach(string flagName in node.Flags)
+			{
+				Flags.Add(flagName);
+			}
 		}
 		public NodeViewModel(NodeViewModel model)
 		{
@@ -121,7 +143,8 @@ namespace BehaviorEditor.MVVM.ViewModel
 			Name = model.Name;
 			NodeType = model.NodeType;
 			Location = new Point(model.Location.X + 10.0*SPREAD_MULTIPLIER, model.Location.Y + 10.0*SPREAD_MULTIPLIER);
-			
+			UserID = model.UserID;
+
 			if (DataNode.Graph != null) { GraphViewModelData = new GraphViewModel(DataNode.Graph, this); }
 			foreach (TNodeInput input in DataNode.Inputs)
 			{
@@ -135,15 +158,12 @@ namespace BehaviorEditor.MVVM.ViewModel
 			{
 				PropertySheetViewModels.Add(new PropertySheetViewModel(sheet));
 			}
-
 		}
 
 		public List<NodeViewModel> GetNestedNodeViewModels() => GraphViewModelData?.NodeViewModels.ToList();
 		public List<LinkViewModel> GetLinkViewModels(List<NodeViewModel> nodes)
 		{
 			List<LinkViewModel> linkVMs = new List<LinkViewModel>();
-
-
 			foreach (var inputVM in InputViewModels)
 			{
 				inputVM.GetViewModels(this, nodes, linkVMs);

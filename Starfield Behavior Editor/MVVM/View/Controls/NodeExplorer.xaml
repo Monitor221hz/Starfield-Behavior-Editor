@@ -21,6 +21,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Background="{StaticResource ControlColor}" Margin="20 0 0 5">
@@ -46,11 +47,31 @@
                     </Border>
                     <TextBlock  Text="{Binding RelativeSource={StaticResource RelativeSourceToParentNodeExplorer},Path=NodeSource.NodeType, Mode=TwoWay}" Style="{StaticResource ControlTextBlockStyle}" FontSize="13" Margin="5" Padding="5"></TextBlock>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Border Style="{StaticResource HeaderBorder}" BorderThickness="3" Margin="0 5 5 5">
+                        <TextBlock Text="User ID:" Style="{StaticResource HighlightTextBlockStyle}" FontSize="13" Padding="5" ></TextBlock>
+                    </Border>
+                    <TextBlock  Text="{Binding RelativeSource={StaticResource RelativeSourceToParentNodeExplorer},Path=NodeSource.UserID, Mode=TwoWay,StringFormat=D}" Style="{StaticResource ControlTextBlockStyle}" FontSize="13" Margin="5" Padding="5"></TextBlock>
+                </StackPanel>
             </StackPanel>
+            <Expander Grid.Row="1" Style="{StaticResource HighlightExpanderStyle}"  Header="Flags" FontSize="13" 
+          ExpandDirection="Down" IsExpanded="False">
+                <local:FlagExplorer ItemsSource="{Binding RelativeSource={StaticResource RelativeSourceToParentNodeExplorer},Path=NodeSource.Flags}"></local:FlagExplorer>
+            </Expander>
+            <Expander Grid.Row="2" Style="{StaticResource HighlightExpanderStyle}"  Header="Tables" FontSize="13" 
+          ExpandDirection="Down" IsExpanded="False">
+                <local:PropertyExplorer  ItemsSource="{Binding RelativeSource={StaticResource RelativeSourceToParentNodeExplorer},Path=NodeSource.PropertySheetViewModels}"></local:PropertyExplorer>
+            </Expander>
+            <Expander Grid.Row="3" Style="{StaticResource HighlightExpanderStyle}"  Header="Graph" FontSize="13" 
+          ExpandDirection="Down" IsExpanded="False">
+                <local:GraphExplorer GraphSource="{Binding RelativeSource={StaticResource RelativeSourceToParentNodeExplorer},Path=NodeSource.GraphViewModelData}" Visibility="{Binding RelativeSource={StaticResource RelativeSourceToParentNodeExplorer},Path=NodeSource.HasChildren, Converter={StaticResource BooleanToVisibilityConverter}}"></local:GraphExplorer>
+            </Expander>
+            <Expander Grid.Row="4" Style="{StaticResource HighlightExpanderStyle}"  Header="Links In" FontSize="13" 
+          ExpandDirection="Down" IsExpanded="False">
+                <local:LinkExplorer ItemsSource="{Binding RelativeSource={StaticResource RelativeSourceToParentNodeExplorer},Path=NodeSource.InputViewModels}"></local:LinkExplorer>
+            </Expander>
 
-            <local:PropertyExplorer Grid.Row="1" ItemsSource="{Binding RelativeSource={StaticResource RelativeSourceToParentNodeExplorer},Path=NodeSource.PropertySheetViewModels}"></local:PropertyExplorer>
-            <local:LinkExplorer Grid.Row="2" ItemsSource="{Binding RelativeSource={StaticResource RelativeSourceToParentNodeExplorer},Path=NodeSource.InputViewModels}"></local:LinkExplorer>
-            <local:GraphExplorer Grid.Row="3" GraphSource="{Binding RelativeSource={StaticResource RelativeSourceToParentNodeExplorer},Path=NodeSource.GraphViewModelData}" ></local:GraphExplorer>
+
         </Grid>
     </ScrollViewer>
 </UserControl>

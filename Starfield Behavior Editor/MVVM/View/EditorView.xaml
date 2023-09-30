@@ -144,7 +144,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:EmbeddedNodeViewModel}">
                     <StackPanel Background="Transparent">
-                        <nodify:GroupingNode MovementMode="Group"></nodify:GroupingNode>
+                        <nodify:GroupingNode MovementMode="Group" Background="Transparent" HeaderBrush="Transparent">
+                        
+                        </nodify:GroupingNode>
                         <nodify:Node Header="{Binding Name}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
              Input="{Binding InputViewModels}"
              Output="{Binding OutputViewModels}">

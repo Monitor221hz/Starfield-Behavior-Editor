@@ -26,6 +26,10 @@ namespace BehaviorEditor.MVVM.ViewModel
 		public NodifyObservableCollection<NodeViewModel> NodeViewModels { get => nodeViewModels; set => SetProperty(ref nodeViewModels, value); }
 
 		public DelegateCommand CallChildrenCommand { get;  }
+
+		public bool HasChildren => true;
+
+
 		internal GraphViewModel(Graph graph, NodeViewModel parentNodeVM)
 		{
 			CallChildrenCommand = new DelegateCommand(CallChildNodeViewModels);

@@ -12,7 +12,7 @@
                   Grid.Row="0" Grid.Column="0" 
                   ItemsSource="{Binding ItemsSource,
                       RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                  
+                  BorderThickness="0"
                   Background="{StaticResource ControlColor}"
                   Foreground="{StaticResource HeaderTextGradient}">
             <ListView.ItemTemplate>

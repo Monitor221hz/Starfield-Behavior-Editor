@@ -40,14 +40,16 @@ namespace BehaviorEditor.MVVM.Model.Starfield
 		}
 		public void TranslateAll()
 		{
-			foreach(var node in nodeList)
+			for (int i = 0; i < nodeList.Count; i++)
 			{
+				TNode node = nodeList[i];
+				node.UserID = i + 1;
 				TranslateNode(node);
 			}
 		}
 		public void TranslateNode(TNode node)
 		{
-			foreach(var input in node.Inputs)
+			foreach (TNodeInput input in node.Inputs)
 			{
 				TranslateInput(input);
 			}
@@ -56,7 +58,8 @@ namespace BehaviorEditor.MVVM.Model.Starfield
 		{
 			foreach(var link in input.Links)
 			{
-				link.NodeID = nodeList.IndexOf(link.ConnectedNode)+1;
+				link.NodeID = nodeList.IndexOf(link.ConnectedNode) + 1;
+
 			}
 		}
 

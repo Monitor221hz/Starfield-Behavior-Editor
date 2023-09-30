@@ -60,6 +60,7 @@ namespace BehaviorEditor.MVVM.ViewModel
 			ParentNodeViewModel = nodeVM;
 			Connector = connector;
 			Name = connector.Name;
+			if (string.IsNullOrWhiteSpace(Name)) Name = "-";
 		}
 
 		public ConnectorViewModel(ConnectorViewModel connectorViewModel)

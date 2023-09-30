@@ -8,6 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <RelativeSource x:Key="RelativeSourceToParentGraphExplorer" Mode="FindAncestor" AncestorType="{x:Type local:GraphExplorer}" />
+
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -15,7 +16,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid >
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -23,7 +24,8 @@
               <TextBox Grid.Column="0" Text="Children" 
                                HorizontalAlignment="Stretch"
                                HorizontalContentAlignment="Stretch"
-                               Padding="10"
+                               Padding="8"
+                               Margin="6 0 0 0"
                                FontSize="13"
                                Style="{StaticResource HighlightTextBoxStyle}"
                                BorderThickness="3"
@@ -46,7 +48,7 @@
                   ItemsSource="{Binding RelativeSource={StaticResource RelativeSourceToParentGraphExplorer},Path=GraphSource.NodeViewModels}" 
                   Background="{StaticResource ControlColor}"
                   Foreground="{StaticResource HeaderTextGradient}" BorderThickness="0"
-                  Margin="20 0 20 0">
+                  Margin="20 0 65 0">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
